@@ -9,7 +9,7 @@ data class Category (
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "cat_id")
-    val catId:Int?,
+    val catId:Int,
 
     @ColumnInfo(name = "cat_name")
     val catName:String,

@@ -55,7 +55,7 @@ class MainViewModel @Inject constructor(
             }
             is MainEvents.SelectCategory -> {
 
-                if (mainEvents.category.catId == null){ //Show all notes if category is null
+                if (mainEvents.category.catId == 0){ //Show all notes if category is null
                     getNotesList()
                 }
 

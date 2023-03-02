@@ -28,7 +28,7 @@ data class Note (
     val isPinned:Boolean,
 
     @ColumnInfo(name = "note_cat_id")
-    val noteCategory:Category
+    val noteCategory:Int
         )
 {
     companion object{
