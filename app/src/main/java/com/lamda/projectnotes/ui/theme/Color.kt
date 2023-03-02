@@ -18,3 +18,12 @@ val Red80 = Color(0xFFFCD4D4)
 val Rose80 = Color(0xFFFCDFFB)
 val Lime80 = Color(0xFFECEEB2)
 val Grey80 = Color(0xFFE8E8E8)
+
+
+val Blue80 = Color(0xff365ca8)
+val BlueGrey80 = Color(0xff575e71)
+val PinkGrey80 = Color(0xff725572)
+
+val Blue40 = Color(0xffb0c6ff)
+val BlueGrey40 = Color(0xffbfc6dc)
+val PinkGrey40 = Color(0xffe0bbde)

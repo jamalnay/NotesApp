@@ -27,6 +27,7 @@ class MainViewModel @Inject constructor(
     val categoriesState: State<CategoriesState> = _categoriesState
 
 
+
     //Assign jobs to stop calling coroutine flow jobs multiple times
     private var getNotesJob: Job? = null
     private var getCategoriesJob: Job? = null
@@ -55,11 +56,15 @@ class MainViewModel @Inject constructor(
             }
             is MainEvents.SelectCategory -> {
 
-                if (mainEvents.category.catId == 0){ //Show all notes if category is null
+                if (mainEvents.category.catId == 0){ //Show all notes if category is 0
+                    _notesState.value.selectedCategory = null
                     getNotesList()
                 }
 
-                else (getNotesForCategory(mainEvents.category.catId))
+                else{
+                    getNotesForCategory(mainEvents.category.catId)
+                    _notesState.value.selectedCategory = mainEvents.category
+                }
             }
         }
     }
