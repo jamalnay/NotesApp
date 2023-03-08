@@ -10,7 +10,7 @@ import com.lamda.projectnotes.ui.theme.*
 data class Note (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "note_id")
-    val noteId: Int, // must be 0 by default ??
+    val noteId: Int = 0, // must be 0 by default ??
 
     @ColumnInfo(name = "note_title")
     val noteTitle: String,

@@ -1,22 +1,19 @@
-package com.lamda.projectnotes.presentation.main.components
+package com.lamda.projectnotes.presentation.home.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.AssistChip
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.lamda.projectnotes.data.data_source.local.Model.Category
-import com.lamda.projectnotes.presentation.main.MainEvents
-import com.lamda.projectnotes.presentation.main.MainViewModel
+import com.lamda.projectnotes.presentation.home.MainEvents
+import com.lamda.projectnotes.presentation.home.MainViewModel
 
 
 

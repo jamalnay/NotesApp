@@ -1,4 +1,4 @@
-package com.lamda.projectnotes.presentation.main
+package com.lamda.projectnotes.presentation.home
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -10,16 +10,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lamda.projectnotes.data.data_source.local.Model.Note
-import com.lamda.projectnotes.presentation.main.components.NoteOptions
-import com.lamda.projectnotes.presentation.main.components.PinNoteButton
-import com.lamda.projectnotes.presentation.main.utils.dateConverter
+import com.lamda.projectnotes.presentation.home.components.NoteOptions
+import com.lamda.projectnotes.presentation.home.components.PinNoteButton
+import com.lamda.projectnotes.presentation.home.utils.dateConverter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteCard(
     note:Note,
     modifier: Modifier = Modifier,
-    onPinToggled: (Int) -> Unit,
+    onPinToggled: (Note) -> Unit,
     isPinned: Boolean
 ){
     Card (
@@ -44,7 +44,7 @@ fun NoteCard(
 
                 PinNoteButton(
                     isPinned = note.isPinned,
-                    onClick = { onPinToggled(note.noteId) },
+                    onClick = { onPinToggled(note) },
                     modifier = Modifier.padding(top = 0.dp))
             }
 
@@ -78,11 +78,7 @@ fun NoteCard(
 
                 NoteOptions(note,modifier.padding(0.dp))
             }
-
     }
-
-
-
 }
 
 

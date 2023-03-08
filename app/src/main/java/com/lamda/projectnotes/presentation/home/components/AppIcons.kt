@@ -1,4 +1,4 @@
-package com.lamda.projectnotes.presentation.main.components
+package com.lamda.projectnotes.presentation.home.components
 
 
 import androidx.compose.material.icons.Icons
@@ -55,3 +55,5 @@ fun NoteOptions(
 
     }
 }
+
+

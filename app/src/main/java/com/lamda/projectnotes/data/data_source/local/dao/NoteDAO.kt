@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface NoteDAO {
 
-    @Query("SELECT * FROM note ORDER BY is_pinned,note_id") //TODO() solve the ordering problem
+    @Query("SELECT * FROM note ORDER BY is_pinned,creation_time DESC") //TODO() solve the ordering problem
     fun getAllNotes():Flow<List<Note>>
 
    //Grab notes of selected categories

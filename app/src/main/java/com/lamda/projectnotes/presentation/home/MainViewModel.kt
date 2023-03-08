@@ -1,4 +1,4 @@
-package com.lamda.projectnotes.presentation.main
+package com.lamda.projectnotes.presentation.home
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -9,7 +9,6 @@ import com.lamda.projectnotes.domain.use_cases.CategoryUseCases
 import com.lamda.projectnotes.domain.use_cases.NoteUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,6 +35,8 @@ class MainViewModel @Inject constructor(
         getCategoriesList()
         getNotesList()
     }
+
+
 
 
     fun onEvent(mainEvents: MainEvents){
@@ -70,17 +71,20 @@ class MainViewModel @Inject constructor(
     }
 
     private fun getNotesList(){
-        noteUseCases.getAllNotes.invoke().onEach {notes ->
-            _notesState.value = notesState.value.copy(
-                listOfNotes = notes
-            )
+        getNotesJob?.cancel()
+        getNotesJob = viewModelScope.launch {
+            noteUseCases.getAllNotes.invoke().collect{notes ->
+                _notesState.value = notesState.value.copy(
+                    listOfNotes = notes
+                )
+            }
         }
     }
 
     private fun getCategoriesList(){
         getCategoriesJob?.cancel()
         getCategoriesJob = viewModelScope.launch {
-            categoryUseCases.getAllCategories.invoke().onEach {categories ->
+            categoryUseCases.getAllCategories.invoke().collect{categories ->
                 _categoriesState.value = categoriesState.value.copy(
                     listOfCategories = categories
                 )
@@ -91,7 +95,7 @@ class MainViewModel @Inject constructor(
     private fun getNotesForCategory(catId:Int){
         getNotesJob?.cancel()
         getNotesJob = viewModelScope.launch {
-            noteUseCases.getNotesForCategory.invoke(catId = catId).onEach {notes ->
+            noteUseCases.getNotesForCategory.invoke(catId = catId).collect {notes ->
                 _notesState.value = notesState.value.copy(
                     listOfNotes = notes
                 )

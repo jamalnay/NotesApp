@@ -1,4 +1,4 @@
-package com.lamda.projectnotes.presentation.main.utils
+package com.lamda.projectnotes.presentation.home.utils
 
 import java.text.SimpleDateFormat
 import java.util.*
