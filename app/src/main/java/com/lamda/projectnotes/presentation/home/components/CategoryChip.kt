@@ -1,5 +1,6 @@
 package com.lamda.projectnotes.presentation.home.components
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -26,7 +27,8 @@ fun CategoryChipGroup(
     modifier: Modifier
 ){
     LazyRow(
-        modifier = Modifier.fillMaxWidth().padding(24.dp)
+        modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(horizontal = 8.dp)
     ){
         items(categoriesList){category ->
             CategoryChip(category = category,viewModel
@@ -48,7 +50,7 @@ fun CategoryChip(
         modifier = modifier.padding(8.dp),
         label = { Text(text = category.catName) },
         onClick = { viewModel.onEvent(MainEvents.SelectCategory(category)) },
-        selected = selected
+        selected = selected,
     )
 }
 
