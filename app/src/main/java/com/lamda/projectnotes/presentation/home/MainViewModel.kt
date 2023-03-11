@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lamda.projectnotes.data.data_source.local.Model.Category
 import com.lamda.projectnotes.data.data_source.local.Model.Note
 import com.lamda.projectnotes.domain.use_cases.CategoryUseCases
 import com.lamda.projectnotes.domain.use_cases.NoteUseCases
@@ -32,6 +33,7 @@ class MainViewModel @Inject constructor(
     private var getCategoriesJob: Job? = null
 
     init {
+        notesState.value.selectedCategory = Category(-1,"All")
         getCategoriesList()
         getNotesList()
     }
@@ -44,7 +46,7 @@ class MainViewModel @Inject constructor(
         when(mainEvents){
             is MainEvents.PinUnpinNote -> {
                 val pinUnpin : Boolean = !mainEvents.note.isPinned
-                val updatedNote: Note = Note(
+                val updatedNote = Note(
                     mainEvents.note.noteId,
                     mainEvents.note.noteTitle,
                     mainEvents.note.noteContent,
@@ -57,8 +59,8 @@ class MainViewModel @Inject constructor(
             }
             is MainEvents.SelectCategory -> {
 
-                if (mainEvents.category.catId == 0){ //Show all notes if category is 0
-                    _notesState.value.selectedCategory = null
+                if (mainEvents.category.catId == -1){ //Show all notes if category is 0
+                    _notesState.value.selectedCategory = Category(-1,"All")
                     getNotesList()
                 }
 
@@ -66,6 +68,9 @@ class MainViewModel @Inject constructor(
                     getNotesForCategory(mainEvents.category.catId)
                     _notesState.value.selectedCategory = mainEvents.category
                 }
+            }
+            MainEvents.CreateCategory -> {
+                TODO()
             }
         }
     }

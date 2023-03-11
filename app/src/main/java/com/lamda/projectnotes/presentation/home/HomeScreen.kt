@@ -29,9 +29,6 @@ fun HomeScreen(
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
-
-
-
     ModalNavigationDrawer(
         /* TODO()
          when "swip to dismiss Navigatio drawer" gesture is enabled it overlaps
@@ -51,7 +48,6 @@ fun HomeScreen(
                 isSyncActivated = true /* TODO */,
                 onSyncChecked = { /*TODO*/ })
         }){
-
         Scaffold(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
             topBar = {
@@ -59,12 +55,14 @@ fun HomeScreen(
                     scrollBehavior = scrollBehavior,
                     title = {Text(text = "My Notes")},
                     navigationIcon = {
-                        IconButton(onClick = { coroutineScope.launch { if (drawerState.isOpen) drawerState.close() else drawerState.open() } } )                    {
+                        IconButton(
+                            onClick = { coroutineScope.launch { if (drawerState.isOpen) drawerState.close() else drawerState.open() } }
+                        ){
+                            /* TODO() navigation drawer icon needs rotate animation */
                             Icon(imageVector = Icons.Default.Menu, contentDescription = "Navigation menu")
                         }
                     }
                 )
-
             },
             floatingActionButton = {
                 ExtendedFloatingActionButton(
@@ -74,36 +72,33 @@ fun HomeScreen(
                     modifier = Modifier.padding(8.dp)
                 )
             }
-
         )
         {PaddingValues ->
             Column(modifier = Modifier
                 .fillMaxSize()
-                .padding(top = PaddingValues.calculateTopPadding())) {
+                .padding(top = PaddingValues.calculateTopPadding(), bottom = 56.dp)) {
                 CategoryChipGroup(
                     categoriesList = categories,
                     viewModel = viewModel,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                 )
-
-
             }
-        LazyColumn(
-            /* TODO()
-            The padding values calculations here are temporarily,
-            i need to find a solution for the categories to stick with the TopBar  */
-            Modifier.fillMaxSize().padding(top = PaddingValues.calculateTopPadding()*2)
-        ){
-            items(notes){note ->
-                NoteCard(
-                    note = note,
-                    onPinToggled = {viewModel.onEvent(MainEvents.PinUnpinNote(note))},
-                    isPinned = note.isPinned)
+            LazyColumn(
+                /* TODO()
+                The padding values calculations here are temporarily,
+                i need to find a solution for the categories to stick with the TopBar  */
+                Modifier
+                    .fillMaxSize()
+                    .padding(top = PaddingValues.calculateTopPadding() + 56.dp)
+            ){
+                items(notes){note ->
+                    NoteCard(
+                        note = note,
+                        onPinToggled = {viewModel.onEvent(MainEvents.PinUnpinNote(note))},
+                        isPinned = note.isPinned)
+                }
             }
         }
-        }
-
     }
 }
-
-

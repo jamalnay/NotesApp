@@ -1,13 +1,14 @@
 package com.lamda.projectnotes.presentation.home.components
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CreateNewFolder
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,17 +27,28 @@ fun CategoryChipGroup(
     viewModel: MainViewModel,
     modifier: Modifier
 ){
-    LazyRow(
-        modifier = Modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(horizontal = 8.dp)
-    ){
-        items(categoriesList){category ->
-            CategoryChip(category = category,viewModel
-                ,modifier = modifier,
-                category == viewModel.notesState.value.selectedCategory
-            )
+    Row() {
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(horizontal = 8.dp)
+        ){
+            items(categoriesList){category ->
+                CategoryChip(category = category,viewModel
+                    ,modifier = modifier,
+                    selected =  category == viewModel.notesState.value.selectedCategory
+                )
+                if (category == categoriesList.last()){
+                    NewCategoryChip(viewModel = viewModel, modifier = modifier)
+                }
+            }
         }
+
     }
+
+
+
+
+
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,19 +59,43 @@ fun CategoryChip(
     selected: Boolean
 ) {
     FilterChip(
-        modifier = modifier.padding(8.dp),
+        modifier = modifier.padding(4.dp),
         label = { Text(text = category.catName) },
         onClick = { viewModel.onEvent(MainEvents.SelectCategory(category)) },
         selected = selected,
     )
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun NewCategoryChip(
+    viewModel: MainViewModel,
+    modifier: Modifier
+){
+    FilterChip(
+        modifier = modifier.padding(4.dp),
+        selected = false, 
+        onClick = { viewModel.onEvent(MainEvents.CreateCategory) },
+        label = {"  "},
+        trailingIcon = {
+            Icon(
+                imageVector = Icons.Default.CreateNewFolder,
+                contentDescription = "Create New Category"
+            )
+        }
+    ) 
+}
+
+
 @Preview
 @Composable
 fun CategoryChipGroupPreview(
 ){
     LazyRow(
-        modifier = Modifier.fillMaxWidth().padding(24.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(24.dp)
     ){
         items(listOf(
             Category(0,"All"),
