@@ -9,21 +9,21 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CreateNewFolder
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.SecureFlagPolicy
 import com.lamda.projectnotes.data.data_source.local.Model.Category
 import com.lamda.projectnotes.presentation.home.MainEvents
 import com.lamda.projectnotes.presentation.home.MainViewModel
-
-
-
+import androidx.compose.material3.AlertDialog
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 
 
 @Composable
 fun CategoryChipGroup(
-    categoriesList: List<Category>,
     viewModel: MainViewModel,
     modifier: Modifier
 ){
@@ -32,23 +32,20 @@ fun CategoryChipGroup(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(horizontal = 8.dp)
         ){
-            items(categoriesList){category ->
-                CategoryChip(category = category,viewModel
-                    ,modifier = modifier,
+            items(viewModel.categoriesState.value.listOfCategories){category ->
+                CategoryChip(
+                    category = category,
+                    viewModel = viewModel,
+                    modifier = modifier,
                     selected =  category == viewModel.notesState.value.selectedCategory
                 )
-                if (category == categoriesList.last()){
+                if (category == viewModel.categoriesState.value.listOfCategories.last()){
                     NewCategoryChip(viewModel = viewModel, modifier = modifier)
                 }
             }
         }
 
     }
-
-
-
-
-
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,20 +68,76 @@ fun CategoryChip(
 @Composable
 fun NewCategoryChip(
     viewModel: MainViewModel,
-    modifier: Modifier
+    modifier: Modifier,
 ){
+    var showNewCategoryDialog by remember {mutableStateOf(false)}
+    var text by rememberSaveable { mutableStateOf("") }
+
     FilterChip(
         modifier = modifier.padding(4.dp),
         selected = false, 
-        onClick = { viewModel.onEvent(MainEvents.CreateCategory) },
-        label = {"  "},
+        onClick = { showNewCategoryDialog = !showNewCategoryDialog },
+        label = {""},
         trailingIcon = {
             Icon(
                 imageVector = Icons.Default.CreateNewFolder,
                 contentDescription = "Create New Category"
             )
         }
-    ) 
+    )
+
+    if (showNewCategoryDialog) {
+            AlertDialog(
+                iconContentColor = MaterialTheme.colorScheme.primary,
+                onDismissRequest = { showNewCategoryDialog = false },
+                confirmButton = {
+                    TextButton(onClick = {
+                        if (text.isNotEmpty())
+                            viewModel.onEvent(MainEvents.CreateCategory(Category(0,text)))
+                        showNewCategoryDialog = false
+                    }) {
+                        Text(text = "Confirm")
+                    }
+
+                },
+                properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true, securePolicy = SecureFlagPolicy.Inherit),
+                icon = { Icon(imageVector = Icons.Default.CreateNewFolder, contentDescription = null)},
+                title = { Text(text = "Create New Category")},
+                text = {
+                    TextField(
+                        value = text, onValueChange = {text = it},
+                        label = { Text(text = "Category Name")},
+                        singleLine = true)
+                },
+                dismissButton = {
+                    TextButton(onClick = {
+                        showNewCategoryDialog = false
+                    }) {
+                        Text(text = "Cancel")
+                    }
+                },
+
+                )
+
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun NewCategoryDialogue(
+    viewModel: MainViewModel,
+    modifier: Modifier = Modifier,
+){
+
+
+
+}
+
+@Preview
+@Composable
+fun PreviewNewCategoryDialogue(){
+//    NewCategoryDialogue()
 }
 
 
@@ -125,3 +178,4 @@ fun CategoryChipPreview(
         selected = selected
     )
 }
+

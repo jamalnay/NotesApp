@@ -9,14 +9,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.lamda.projectnotes.R
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppDrawer(
-    navigateToCategories: () -> Unit,
-    navigateToTrash: () -> Unit,
+    navController: NavController,
     closeDrawer: () -> Unit,
     isSyncActivated:Boolean,
     onSyncChecked:() -> Unit,
@@ -33,7 +33,7 @@ fun AppDrawer(
             label = { Text("Home") },
             icon = { Icon(Icons.Filled.Home, "Home Screen") },
             selected = true /* currentRoute == NavDestinations.HOME_ROUTE*/ ,
-            onClick = { closeDrawer() },
+            onClick = { navController.navigate(AppDestinations.Home.route); closeDrawer() },
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
         )
 
@@ -41,7 +41,7 @@ fun AppDrawer(
             label = { Text("Edit Categories") },
             icon = { Icon(Icons.Filled.Apps, "Edit Categories") },
             selected = false /* currentRoute == NavDestinations.HOME_ROUTE*/ ,
-            onClick = { navigateToCategories(); closeDrawer() },
+            onClick = { navController.navigate(AppDestinations.ManageCategories.route); closeDrawer() },
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
         )
         NavigationDrawerItem(
@@ -56,7 +56,7 @@ fun AppDrawer(
             label = { Text("Trash") },
             icon = { Icon(Icons.Filled.Delete, "Trash") },
             selected = false /* currentRoute == NavDestinations.HOME_ROUTE*/ ,
-            onClick = { navigateToTrash(); closeDrawer() },
+            onClick = { navController.navigate(AppDestinations.ManageDeleted.route); closeDrawer() },
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
         )
 
@@ -93,14 +93,12 @@ fun SyncSwitch(
     Switch(checked = checked, onCheckedChange = { checked = it; onCheckedChange() })
 }
 
-@Preview
-@Composable
-fun PreviewAppDrawer(){
-    AppDrawer(
-        navigateToCategories = {},
-        isSyncActivated = false,
-        onSyncChecked = {},
-        navigateToTrash = {},
-        closeDrawer = {}
-    )
-}
+//@Preview
+//@Composable
+//fun PreviewAppDrawer(){
+//    AppDrawer(
+//        isSyncActivated = false,
+//        onSyncChecked = {},
+//        closeDrawer = {}
+//    )
+//}

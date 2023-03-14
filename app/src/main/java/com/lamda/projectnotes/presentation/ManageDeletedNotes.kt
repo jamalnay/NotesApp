@@ -1,11 +1,15 @@
-package com.lamda.projectnotes.presentation.note
+package com.lamda.projectnotes.presentation
+
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 
 
+
+
 @Composable
-fun NoteScreen(
+fun DeletedNotes(
     navController: NavController
 ) {
+
 }

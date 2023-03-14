@@ -4,8 +4,8 @@ import com.lamda.projectnotes.data.data_source.local.Model.Category
 import com.lamda.projectnotes.data.data_source.local.Model.Note
 
 data class NotesState (
-    val listOfNotes:List<Note> = emptyList(),
-    var selectedCategory: Category? = null
+    val listOfNotes:List<Note> ,
+    var selectedCategory: Category
         )
 
 data class PinnedNoteState(

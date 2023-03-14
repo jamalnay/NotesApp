@@ -6,6 +6,6 @@ import com.lamda.projectnotes.data.data_source.local.Model.Note
 sealed class MainEvents {
     data class PinUnpinNote(val note:Note):MainEvents()
     data class SelectCategory(val category:Category):MainEvents()
-    object CreateCategory:MainEvents()
+    data class CreateCategory(val category: Category):MainEvents()
 }
 

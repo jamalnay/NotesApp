@@ -1,4 +1,5 @@
 package com.lamda.projectnotes.presentation.home
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -11,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.lamda.projectnotes.presentation.AppDrawer
 import com.lamda.projectnotes.presentation.home.components.CategoryChipGroup
 import kotlinx.coroutines.launch
@@ -19,6 +21,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
+    navController: NavController
 )
 {
     val viewModel: MainViewModel = hiltViewModel()
@@ -29,21 +32,22 @@ fun HomeScreen(
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
-    ModalNavigationDrawer(
-        /* TODO()
-         when "swip to dismiss Navigatio drawer" gesture is enabled it overlaps
+
+    /* TODO() */
+    /*   When "swip to dismiss Navigatio drawer" gesture is enabled it overlaps
          with the gesture of navgating the categories,when it is disabled, its a bit hard for the user
-          to dismiss the drawer unless he clicks on one of the drawer items, this will produce a bad
-          experience for the user this needs a solution
-          Another problem that needs to be solve is pressing the back button when the drawer is open,
-          pressing the back button must close the drawer not the App
-          */
+         to dismiss the drawer unless he clicks on one of the drawer items, this will produce a bad
+         experience for the user this needs a solution
+         Another problem that needs to be solve is pressing the back button when the drawer is open,
+         pressing the back button must close the drawer not the App
+         */
+
+    ModalNavigationDrawer(
         gesturesEnabled = true,
         drawerState = drawerState,
         drawerContent = {
             AppDrawer(
-                navigateToCategories = { /*TODO*/ },
-                navigateToTrash = { /*TODO*/ },
+                navController = navController,
                 closeDrawer = { coroutineScope.launch{ drawerState.close()} },
                 isSyncActivated = true /* TODO */,
                 onSyncChecked = { /*TODO*/ })
@@ -51,18 +55,34 @@ fun HomeScreen(
         Scaffold(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
             topBar = {
+                Column(
+                    modifier = Modifier.fillMaxWidth()
+                )
+                {
                 CenterAlignedTopAppBar(
-                    scrollBehavior = scrollBehavior,
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(0.dp)
+                    ),
                     title = {Text(text = "My Notes")},
                     navigationIcon = {
                         IconButton(
-                            onClick = { coroutineScope.launch { if (drawerState.isOpen) drawerState.close() else drawerState.open() } }
+                            onClick = {
+                                coroutineScope.launch {
+                                    if (drawerState.isOpen) drawerState.close() else drawerState.open()
+                                }
+                            }
                         ){
-                            /* TODO() navigation drawer icon needs rotate animation */
+                            /* TODO() navigation drawer icon needs 360 rotation animation */
                             Icon(imageVector = Icons.Default.Menu, contentDescription = "Navigation menu")
                         }
                     }
                 )
+                    CategoryChipGroup(
+                        viewModel = viewModel,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                }
             },
             floatingActionButton = {
                 ExtendedFloatingActionButton(
@@ -74,23 +94,14 @@ fun HomeScreen(
             }
         )
         {PaddingValues ->
-            Column(modifier = Modifier
-                .fillMaxSize()
-                .padding(top = PaddingValues.calculateTopPadding(), bottom = 56.dp)) {
-                CategoryChipGroup(
-                    categoriesList = categories,
-                    viewModel = viewModel,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
-            }
+
             LazyColumn(
                 /* TODO()
                 The padding values calculations here are temporarily,
                 i need to find a solution for the categories to stick with the TopBar  */
                 Modifier
                     .fillMaxSize()
-                    .padding(top = PaddingValues.calculateTopPadding() + 56.dp)
+                    .padding(top = PaddingValues.calculateTopPadding())
             ){
                 items(notes){note ->
                     NoteCard(
@@ -102,3 +113,6 @@ fun HomeScreen(
         }
     }
 }
+
+
+

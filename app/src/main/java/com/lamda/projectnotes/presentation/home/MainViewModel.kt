@@ -20,11 +20,12 @@ class MainViewModel @Inject constructor(
     private val categoryUseCases: CategoryUseCases
     ):ViewModel()
 {
-    private val _notesState = mutableStateOf(NotesState())
+    private val _notesState = mutableStateOf(NotesState(emptyList(),Category(-1,"All")))
     val notesState: State<NotesState> = _notesState
 
     private val _categoriesState = mutableStateOf(CategoriesState())
     val categoriesState: State<CategoriesState> = _categoriesState
+
 
 
 
@@ -33,7 +34,6 @@ class MainViewModel @Inject constructor(
     private var getCategoriesJob: Job? = null
 
     init {
-        notesState.value.selectedCategory = Category(-1,"All")
         getCategoriesList()
         getNotesList()
     }
@@ -65,12 +65,12 @@ class MainViewModel @Inject constructor(
                 }
 
                 else{
-                    getNotesForCategory(mainEvents.category.catId)
                     _notesState.value.selectedCategory = mainEvents.category
+                    getNotesForCategory(mainEvents.category.catId)
                 }
             }
-            MainEvents.CreateCategory -> {
-                TODO()
+            is MainEvents.CreateCategory -> {
+                viewModelScope.launch { categoryUseCases.createUpdateCategory.invoke(mainEvents.category) }
             }
         }
     }
