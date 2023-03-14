@@ -20,11 +20,14 @@ class MainViewModel @Inject constructor(
     private val categoryUseCases: CategoryUseCases
     ):ViewModel()
 {
-    private val _notesState = mutableStateOf(NotesState(emptyList(),Category(-1,"All")))
+    private val _notesState = mutableStateOf(NotesState(emptyList()))
     val notesState: State<NotesState> = _notesState
 
-    private val _categoriesState = mutableStateOf(CategoriesState())
+    private val _categoriesState = mutableStateOf(CategoriesState(emptyList()))
     val categoriesState: State<CategoriesState> = _categoriesState
+
+    private val _selectedCategoryState = mutableStateOf(SelectedCategoryState(Category(-1,"All")))
+    val selectedCategoryState: State<SelectedCategoryState> = _selectedCategoryState
 
 
 
@@ -60,13 +63,17 @@ class MainViewModel @Inject constructor(
             is MainEvents.SelectCategory -> {
 
                 if (mainEvents.category.catId == -1){ //Show all notes if category is 0
-                    _notesState.value.selectedCategory = Category(-1,"All")
+                    _selectedCategoryState.value = selectedCategoryState.value.copy(
+                        selectedCategory = Category(-1,"All")
+                    )
                     getNotesList()
                 }
 
                 else{
-                    _notesState.value.selectedCategory = mainEvents.category
-                    getNotesForCategory(mainEvents.category.catId)
+                    _selectedCategoryState.value = selectedCategoryState.value.copy(
+                        selectedCategory = mainEvents.category
+                    )
+                    getNotesForCategory(selectedCategoryState.value.selectedCategory.catId)
                 }
             }
             is MainEvents.CreateCategory -> {

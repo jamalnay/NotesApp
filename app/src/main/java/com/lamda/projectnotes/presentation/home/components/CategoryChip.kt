@@ -37,7 +37,7 @@ fun CategoryChipGroup(
                     category = category,
                     viewModel = viewModel,
                     modifier = modifier,
-                    selected =  category == viewModel.notesState.value.selectedCategory
+                    selected =  category == viewModel.selectedCategoryState.value.selectedCategory
                 )
                 if (category == viewModel.categoriesState.value.listOfCategories.last()){
                     NewCategoryChip(viewModel = viewModel, modifier = modifier)
