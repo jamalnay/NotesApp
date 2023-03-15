@@ -11,6 +11,7 @@ import com.lamda.projectnotes.domain.use_cases.NoteUseCases
 import com.lamda.projectnotes.domain.use_cases.category_use_cases.CreateUpdateCategory
 import com.lamda.projectnotes.domain.use_cases.category_use_cases.DeleteCategory
 import com.lamda.projectnotes.domain.use_cases.category_use_cases.GetAllCategories
+import com.lamda.projectnotes.domain.use_cases.category_use_cases.GetCatById
 import com.lamda.projectnotes.domain.use_cases.note_use_cases.CreateUpdateNote
 import com.lamda.projectnotes.domain.use_cases.note_use_cases.DeleteNote
 import com.lamda.projectnotes.domain.use_cases.note_use_cases.GetAllNotes
@@ -64,7 +65,8 @@ object LocalDatabaseModule {
         return CategoryUseCases(
             createUpdateCategory = CreateUpdateCategory(repository),
             deleteCategory = DeleteCategory(repository),
-            getAllCategories = GetAllCategories(repository)
+            getAllCategories = GetAllCategories(repository),
+            getCatById = GetCatById(repository)
         )
     }
 

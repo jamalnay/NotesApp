@@ -28,7 +28,10 @@ data class Note (
     val isPinned:Boolean,
 
     @ColumnInfo(name = "note_cat_id")
-    val noteCategory:Int
+    val noteCategory:Int,
+
+    @ColumnInfo(name = "note_cat_name") //a quick fix to show the right category for each note, this is not an optimal solution
+    val noteCategoryName:String,
         )
 {
     companion object{

@@ -13,6 +13,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.lamda.projectnotes.presentation.AppDestinations
 import com.lamda.projectnotes.presentation.AppDrawer
 import com.lamda.projectnotes.presentation.home.components.CategoryChipGroup
 import kotlinx.coroutines.launch
@@ -24,8 +25,7 @@ fun HomeScreen(
     navController: NavController
 )
 {
-    val viewModel: MainViewModel = hiltViewModel()
-    val categories = viewModel.categoriesState.value.listOfCategories
+    val viewModel: HomeViewModel = hiltViewModel()
     val notes = viewModel.notesState.value.listOfNotes
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
@@ -88,7 +88,7 @@ fun HomeScreen(
                 ExtendedFloatingActionButton(
                     text = { Text(text = "New Note") },
                     icon = { Icon(imageVector = Icons.Default.Create, contentDescription = "Create a new Note") },
-                    onClick = { /* TODO() */ },
+                    onClick = { navController.navigate(AppDestinations.CreateUpdateNote.route+"?noteId=${0}")},
                     modifier = Modifier.padding(8.dp)
                 )
             }
@@ -106,7 +106,7 @@ fun HomeScreen(
                 items(notes){note ->
                     NoteCard(
                         note = note,
-                        onPinToggled = {viewModel.onEvent(MainEvents.PinUnpinNote(note))},
+                        onPinToggled = {viewModel.onEvent(HomeEvents.PinUnpinNote(note))},
                         isPinned = note.isPinned)
                 }
             }

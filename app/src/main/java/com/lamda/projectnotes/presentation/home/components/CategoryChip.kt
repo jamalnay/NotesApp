@@ -15,16 +15,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.SecureFlagPolicy
 import com.lamda.projectnotes.data.data_source.local.Model.Category
-import com.lamda.projectnotes.presentation.home.MainEvents
-import com.lamda.projectnotes.presentation.home.MainViewModel
+import com.lamda.projectnotes.presentation.home.HomeEvents
+import com.lamda.projectnotes.presentation.home.HomeViewModel
 import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.graphics.Color
 
 
 @Composable
 fun CategoryChipGroup(
-    viewModel: MainViewModel,
+    viewModel: HomeViewModel,
     modifier: Modifier
 ){
     Row() {
@@ -51,14 +52,14 @@ fun CategoryChipGroup(
 @Composable
 fun CategoryChip(
     category:Category,
-    viewModel: MainViewModel,
+    viewModel: HomeViewModel,
     modifier: Modifier,
     selected: Boolean
 ) {
     FilterChip(
         modifier = modifier.padding(4.dp),
         label = { Text(text = category.catName) },
-        onClick = { viewModel.onEvent(MainEvents.SelectCategory(category)) },
+        onClick = { viewModel.onEvent(HomeEvents.SelectCategory(category)) },
         selected = selected,
     )
 }
@@ -67,7 +68,7 @@ fun CategoryChip(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCategoryChip(
-    viewModel: MainViewModel,
+    viewModel: HomeViewModel,
     modifier: Modifier,
 ){
     var showNewCategoryDialog by remember {mutableStateOf(false)}
@@ -93,7 +94,7 @@ fun NewCategoryChip(
                 confirmButton = {
                     TextButton(onClick = {
                         if (text.isNotEmpty())
-                            viewModel.onEvent(MainEvents.CreateCategory(Category(0,text)))
+                            viewModel.onEvent(HomeEvents.CreateCategory(Category(0,text)))
                         showNewCategoryDialog = false
                     }) {
                         Text(text = "Confirm")
@@ -107,7 +108,8 @@ fun NewCategoryChip(
                     TextField(
                         value = text, onValueChange = {text = it},
                         label = { Text(text = "Category Name")},
-                        singleLine = true)
+                        singleLine = true,
+                    )
                 },
                 dismissButton = {
                     TextButton(onClick = {
@@ -116,7 +118,8 @@ fun NewCategoryChip(
                         Text(text = "Cancel")
                     }
                 },
-
+                containerColor = Color.White,
+                tonalElevation = 0.dp
                 )
 
     }
@@ -126,7 +129,7 @@ fun NewCategoryChip(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCategoryDialogue(
-    viewModel: MainViewModel,
+    viewModel: HomeViewModel,
     modifier: Modifier = Modifier,
 ){
 

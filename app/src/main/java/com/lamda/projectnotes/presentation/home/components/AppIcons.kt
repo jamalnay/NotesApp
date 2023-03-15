@@ -40,6 +40,9 @@ fun PinNoteButton(
     }
 }
 
+
+
+/* Not implemented because Material 3 Bottom sheets not implemented yet*/
 @Composable
 fun NoteOptions(
     note: Note,

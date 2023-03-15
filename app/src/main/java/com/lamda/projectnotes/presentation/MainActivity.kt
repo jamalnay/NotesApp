@@ -35,20 +35,19 @@ class MainActivity : ComponentActivity() {
                             HomeScreen(navController = navController)
                         }
                         composable(
-                            route = AppDestinations.ViewNote.route+"noteId?={noteId}",
+                            route = AppDestinations.ViewNote.route+"?noteId={noteId}",
                             arguments = listOf(navArgument(name = "noteId"){
                                 type = NavType.IntType
-                                defaultValue = -1
                             }
                             )
                         ){
                             NoteScreen(navController = navController)
                         }
                         composable(
-                            route = AppDestinations.CreateUpdateNote.route+"noteId?={noteId}",
+                            route = AppDestinations.CreateUpdateNote.route+"?noteId={noteId}",
                             arguments = listOf(navArgument(name = "noteId"){
                                 type = NavType.IntType
-                                defaultValue = -1
+                                defaultValue = 0
                             }
                             )
                         ){

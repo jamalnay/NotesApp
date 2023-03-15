@@ -11,6 +11,10 @@ class CategoryRepositoryImpl @Inject constructor(private val categoryDao: Catego
         return categoryDao.getAllCategories()
     }
 
+    override suspend fun getCatById(catId: Int): Category {
+        return categoryDao.getCatById(catId)
+    }
+
     override suspend fun insertCategory(category: Category) {
         categoryDao.insertCategory(category)
     }

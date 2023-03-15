@@ -37,8 +37,10 @@ fun NoteCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             )
             {
-                Text( modifier = Modifier.padding(8.dp,top = 16.dp),
+                Text( modifier = Modifier.padding(8.dp,top = 16.dp).weight(2f),
                     text = note.noteTitle,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.primary)
 
@@ -60,23 +62,23 @@ fun NoteCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp),
+                    .padding(8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             )
             {
                 Text( modifier = Modifier
-                    .padding(8.dp, top = 14.dp)
+                    .padding(8.dp, top = 8.dp)
                     .weight(2f),
-                    text = "Business",
+                    text = note.noteCategoryName,
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.primary)
 
-                Text(modifier = Modifier.padding(top = 14.dp),
+                Text(modifier = Modifier.padding(8.dp),
                     text = dateConverter(note.creationTime),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.primary)
 
-                NoteOptions(note,modifier.padding(0.dp))
+
             }
     }
 }
@@ -89,7 +91,7 @@ NoteCard(note = Note(5,"What lorem ipsum text is?","Hello everyone this is " +
         "my first note, happy to meet you all, Thank you. In publishing and graphic design, Lorem ipsum is " +
         "a placeholder text commonly used to demonstr " +
         "ate the visual form of a document or a typeface",1677658911,Note.noteColors.random().toArgb(),
-    false,0),
+    false,0,"TestCategory"),
     onPinToggled = {},
     isPinned = true,
     modifier = Modifier.wrapContentSize())
@@ -102,7 +104,7 @@ fun PreviewTowNoteItem(){
             "my first note, happy to meet you all, Thank you. In publishing and graphic design, Lorem ipsum is " +
             "a placeholder text commonly used to demonstr " +
             "ate the visual form of a document or a typeface",1677658911,Note.noteColors.random().toArgb(),
-        true,0),
+        true,0,"TestCategory"),
         onPinToggled = {},
         isPinned = true,
         modifier = Modifier.wrapContentSize())
