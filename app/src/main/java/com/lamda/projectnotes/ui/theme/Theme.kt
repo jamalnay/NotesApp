@@ -8,9 +8,6 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
 
-
-
-
 private val LightColors = lightColorScheme(
     primary = md_theme_light_primary,
     onPrimary = md_theme_light_onPrimary,
@@ -79,7 +76,7 @@ private val DarkColors = darkColorScheme(
 @Composable
 fun ProjectNotesTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit
+    content: @Composable() () -> Unit,
 ) {
     val colors = if (!useDarkTheme) {
         LightColors
@@ -89,11 +86,10 @@ fun ProjectNotesTheme(
 
     MaterialTheme(
         colorScheme = colors,
-        content = content
+        content = content,
+        typography = Typography
     )
 }
-
-
 
 
 //@Composable

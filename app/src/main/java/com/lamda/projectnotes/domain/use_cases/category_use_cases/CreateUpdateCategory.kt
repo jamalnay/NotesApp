@@ -4,5 +4,5 @@ import com.lamda.projectnotes.data.data_source.local.Model.Category
 import com.lamda.projectnotes.domain.repository.CategoryRepository
 
 class CreateUpdateCategory(private val repository: CategoryRepository) {
-    suspend operator fun invoke(category:Category) = repository.insertCategory(category)
+    suspend operator fun invoke(category: Category) = repository.insertCategory(category)
 }

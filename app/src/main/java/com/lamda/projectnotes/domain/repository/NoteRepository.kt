@@ -8,9 +8,9 @@ interface NoteRepository {
 
     fun getAllNotes(): Flow<List<Note>>
 
-    fun getNotesForCategory(catId:Int):Flow<List<Note>>
+    fun getNotesForCategory(catId: Int): Flow<List<Note>>
 
-    suspend fun getNote(noteId:Int):Note
+    suspend fun getNote(noteId: Int): Note
 
     suspend fun insertNote(note: Note)
 

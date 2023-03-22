@@ -5,13 +5,13 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "category")
-data class Category (
+data class Category(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "cat_id")
-    val catId:Int = 0,
+    val catId: Int = 0,
 
     @ColumnInfo(name = "cat_name")
-    val catName:String,
+    val catName: String,
 
-        )
+    )

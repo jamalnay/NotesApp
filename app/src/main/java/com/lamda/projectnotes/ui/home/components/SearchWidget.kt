@@ -1,12 +1,10 @@
-package com.lamda.projectnotes.presentation.home.components
-
+package com.lamda.projectnotes.ui.home.components
 
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -16,18 +14,16 @@ fun SearchTextField(
     text: String,
     onTextChange: (String) -> String,
     onCloseClicked: () -> Unit,
-    onSearchClicked: (String) -> Unit
+    onSearchClicked: (String) -> Unit,
 
     ) {
-        //TODO() search textfield at the bottom of the categories chips
+    //TODO() search textfield at the bottom of the categories chips
 }
-
-
 
 
 @Preview
 @Composable
-fun SearchTextFieldPreview(){
+fun SearchTextFieldPreview() {
 
 }
 

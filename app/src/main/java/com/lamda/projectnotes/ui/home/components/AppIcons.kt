@@ -1,4 +1,4 @@
-package com.lamda.projectnotes.presentation.home.components
+package com.lamda.projectnotes.ui.home.components
 
 
 import androidx.compose.material.icons.Icons
@@ -20,33 +20,33 @@ import com.lamda.projectnotes.data.data_source.local.Model.Note
 fun PinNoteButton(
     isPinned: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val clickLabel = if (isPinned) "Unpin note" else "Pin note"
 
     IconToggleButton(
         checked = isPinned,
-        onCheckedChange = {onClick()},
+        onCheckedChange = { onClick() },
         modifier = modifier.semantics {
-            this.onClick(label = clickLabel,action = null)
+            this.onClick(label = clickLabel, action = null)
         }
-                    ) {
+    ) {
         Icon(
             modifier = modifier,
             imageVector = if (isPinned) Icons.Filled.Bookmark else Icons.Filled.BookmarkBorder,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary)
+            tint = MaterialTheme.colorScheme.primary
+        )
 
     }
 }
-
 
 
 /* Not implemented because Material 3 Bottom sheets not implemented yet*/
 @Composable
 fun NoteOptions(
     note: Note,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
 
     IconButton(onClick = { /*TODO*/ }) {
@@ -54,7 +54,8 @@ fun NoteOptions(
             modifier = modifier,
             imageVector = Icons.Outlined.MoreVert,
             contentDescription = "Note Options",
-            tint = MaterialTheme.colorScheme.primary)
+            tint = MaterialTheme.colorScheme.primary
+        )
 
     }
 }

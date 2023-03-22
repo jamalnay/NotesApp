@@ -1,12 +1,12 @@
 package com.lamda.projectnotes.data.data_source.local.repository
 
-import com.lamda.projectnotes.data.data_source.local.dao.NoteDAO
 import com.lamda.projectnotes.data.data_source.local.Model.Note
+import com.lamda.projectnotes.data.data_source.local.dao.NoteDAO
 import com.lamda.projectnotes.domain.repository.NoteRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class NoteRepositoryImpl @Inject constructor(private val noteDao: NoteDAO):NoteRepository {
+class NoteRepositoryImpl @Inject constructor(private val noteDao: NoteDAO) : NoteRepository {
     override fun getAllNotes(): Flow<List<Note>> {
         return noteDao.getAllNotes()
     }

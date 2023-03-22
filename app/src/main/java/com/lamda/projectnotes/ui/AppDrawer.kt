@@ -1,4 +1,4 @@
-package com.lamda.projectnotes.presentation
+package com.lamda.projectnotes.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -7,7 +7,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.lamda.projectnotes.R
@@ -18,9 +17,9 @@ import com.lamda.projectnotes.R
 fun AppDrawer(
     navController: NavController,
     closeDrawer: () -> Unit,
-    isSyncActivated:Boolean,
-    onSyncChecked:() -> Unit,
-    modifier: Modifier = Modifier
+    isSyncActivated: Boolean,
+    onSyncChecked: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     ModalDrawerSheet(
         drawerContainerColor = MaterialTheme.colorScheme.surface
@@ -32,7 +31,7 @@ fun AppDrawer(
         NavigationDrawerItem(
             label = { Text("Home") },
             icon = { Icon(Icons.Filled.Home, "Home Screen") },
-            selected = true /* currentRoute == NavDestinations.HOME_ROUTE*/ ,
+            selected = true /* currentRoute == NavDestinations.HOME_ROUTE*/,
             onClick = { navController.navigate(AppDestinations.Home.route); closeDrawer() },
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
         )
@@ -40,22 +39,22 @@ fun AppDrawer(
         NavigationDrawerItem(
             label = { Text("Edit Categories") },
             icon = { Icon(Icons.Filled.Apps, "Edit Categories") },
-            selected = false /* currentRoute == NavDestinations.HOME_ROUTE*/ ,
+            selected = false /* currentRoute == NavDestinations.HOME_ROUTE*/,
             onClick = { navController.navigate(AppDestinations.ManageCategories.route); closeDrawer() },
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
         )
         NavigationDrawerItem(
             label = { Text("Synchronise notes") },
             icon = { Icon(Icons.Filled.Sync, "Synchronise notes") },
-            selected = false /* currentRoute == NavDestinations.HOME_ROUTE*/ ,
-            onClick = {  },
+            selected = false /* currentRoute == NavDestinations.HOME_ROUTE*/,
+            onClick = { },
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
-            badge =  { SyncSwitch(isSyncActive = isSyncActivated, onCheckedChange = onSyncChecked) }
+            badge = { SyncSwitch(isSyncActive = isSyncActivated, onCheckedChange = onSyncChecked) }
         )
         NavigationDrawerItem(
             label = { Text("Trash") },
             icon = { Icon(Icons.Filled.Delete, "Trash") },
-            selected = false /* currentRoute == NavDestinations.HOME_ROUTE*/ ,
+            selected = false, /* currentRoute == NavDestinations.HOME_ROUTE*/
             onClick = { navController.navigate(AppDestinations.ManageDeleted.route); closeDrawer() },
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
         )
@@ -65,8 +64,8 @@ fun AppDrawer(
         NavigationDrawerItem(
             label = { Text("About The App") },
             icon = { Icon(Icons.Filled.HelpCenter, "About") },
-            selected = false /* currentRoute == NavDestinations.HOME_ROUTE*/ ,
-            onClick = {  },
+            selected = false, /* currentRoute == NavDestinations.HOME_ROUTE*/
+            onClick = { },
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
         )
     }
@@ -86,9 +85,9 @@ private fun ProjectNotesLogo(modifier: Modifier = Modifier) {
 
 @Composable
 fun SyncSwitch(
-    isSyncActive:Boolean,
-    onCheckedChange:() -> Unit
-){
+    isSyncActive: Boolean,
+    onCheckedChange: () -> Unit,
+) {
     var checked by remember { mutableStateOf(isSyncActive) }
     Switch(checked = checked, onCheckedChange = { checked = it; onCheckedChange() })
 }

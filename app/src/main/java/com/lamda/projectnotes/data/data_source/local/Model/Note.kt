@@ -7,7 +7,7 @@ import com.lamda.projectnotes.ui.theme.*
 
 
 @Entity(tableName = "note")
-data class Note (
+data class Note(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "note_id")
     val noteId: Int = 0, // must be 0 by default ??
@@ -25,16 +25,16 @@ data class Note (
     val noteColor: Int,
 
     @ColumnInfo(name = "is_pinned")
-    val isPinned:Boolean,
+    val isPinned: Boolean,
 
     @ColumnInfo(name = "note_cat_id")
-    val noteCategory:Int,
+    val noteCategory: Int,
 
     @ColumnInfo(name = "note_cat_name") //a quick fix to show the right category for each note, this is not an optimal solution
-    val noteCategoryName:String,
-        )
-{
-    companion object{
-        val noteColors = listOf(Orange80, Aqua80, Turquoise80, Red80, Rose80, Lime80, Grey80)
+    val noteCategoryName: String,
+) {
+    companion object {
+        val noteColors =
+            listOf(White80, Orange80, Aqua80, Turquoise80, Red80, Rose80, Lime80, Grey80)
     }
 }

@@ -12,7 +12,7 @@ val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
+        fontSize = 18.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     )
@@ -35,6 +35,13 @@ val Typography = Typography(
 )
 val NoteTypography =
     Typography(
+        bodyLarge = TextStyle(
+            fontFamily = FontFamily.Default,
+            fontWeight = FontWeight.Normal,
+            fontSize = 18.sp,
+            lineHeight = 24.sp,
+            letterSpacing = 0.5.sp
+        ),
         //bodyMedium for content
         bodyMedium = TextStyle(
             fontWeight = FontWeight.Normal,
@@ -52,4 +59,4 @@ val NoteTypography =
             fontStyle = FontStyle.Italic
         ),
 
-)
+        )

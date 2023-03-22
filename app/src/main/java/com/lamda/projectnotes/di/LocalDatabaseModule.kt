@@ -12,10 +12,7 @@ import com.lamda.projectnotes.domain.use_cases.category_use_cases.CreateUpdateCa
 import com.lamda.projectnotes.domain.use_cases.category_use_cases.DeleteCategory
 import com.lamda.projectnotes.domain.use_cases.category_use_cases.GetAllCategories
 import com.lamda.projectnotes.domain.use_cases.category_use_cases.GetCatById
-import com.lamda.projectnotes.domain.use_cases.note_use_cases.CreateUpdateNote
-import com.lamda.projectnotes.domain.use_cases.note_use_cases.DeleteNote
-import com.lamda.projectnotes.domain.use_cases.note_use_cases.GetAllNotes
-import com.lamda.projectnotes.domain.use_cases.note_use_cases.GetNotesForCategory
+import com.lamda.projectnotes.domain.use_cases.note_use_cases.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,14 +26,14 @@ object LocalDatabaseModule {
 
     @Singleton
     @Provides
-    fun provideLocalDatabase(@ApplicationContext context: Context):LocalDatabase{
+    fun provideLocalDatabase(@ApplicationContext context: Context): LocalDatabase {
         return LocalDatabase.getInstance(context)
     }
 
 
     @Singleton
     @Provides
-    fun provideNoteRepository(database: LocalDatabase):NoteRepository{
+    fun provideNoteRepository(database: LocalDatabase): NoteRepository {
         return NoteRepositoryImpl(database.noteDao())
     }
 
@@ -47,21 +44,21 @@ object LocalDatabaseModule {
     }
 
 
-
     @Singleton
     @Provides
-    fun provideNoteUseCases(repository: NoteRepository):NoteUseCases{
+    fun provideNoteUseCases(repository: NoteRepository): NoteUseCases {
         return NoteUseCases(
             createUpdateNote = CreateUpdateNote(repository),
             deleteNote = DeleteNote(repository),
             getAllNotes = GetAllNotes(repository),
-            getNotesForCategory = GetNotesForCategory(repository)
+            getNotesForCategory = GetNotesForCategory(repository),
+            getNote = GetNote(repository)
         )
     }
 
     @Singleton
     @Provides
-    fun provideCategoryUseCases(repository: CategoryRepository):CategoryUseCases{
+    fun provideCategoryUseCases(repository: CategoryRepository): CategoryUseCases {
         return CategoryUseCases(
             createUpdateCategory = CreateUpdateCategory(repository),
             deleteCategory = DeleteCategory(repository),
@@ -69,7 +66,6 @@ object LocalDatabaseModule {
             getCatById = GetCatById(repository)
         )
     }
-
 
 
 }
