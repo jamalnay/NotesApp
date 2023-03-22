@@ -1,5 +1,6 @@
 package com.lamda.projectnotes.ui.manage_note
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,7 @@ import com.lamda.projectnotes.ui.theme.White80
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import androidx.compose.runtime.saveable.rememberSaveable as rememberSaveable1
 
 
 data class NoteUiState(
@@ -32,7 +34,9 @@ class NoteManagementViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var _noteState = mutableStateOf(NoteUiState())
-    val noteState = _noteState
+    val noteState: State<NoteUiState> = _noteState
+
+
 
     private var noteId: Int? = null
 
@@ -57,6 +61,7 @@ class NoteManagementViewModel @Inject constructor(
         val pinnedUnpinnedNote = note.copy(isPinned = !note.isPinned)
         viewModelScope.launch { noteUseCases.createUpdateNote(pinnedUnpinnedNote) }
     }
+
 
 
 }

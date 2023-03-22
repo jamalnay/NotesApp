@@ -21,8 +21,9 @@ fun ManageNoteScreen(
 ) {
 
     val note = viewModel.noteState.value.note
-    val isPinned = viewModel.noteState.value.note.isPinned //TODO() Fix the pining problem
+    var isPinned by remember { mutableStateOf(false) }
     var noteFontSize by rememberSaveable { mutableStateOf(16) }
+    isPinned = note.isPinned
 
 
 
@@ -63,6 +64,7 @@ fun ManageNoteScreen(
 
                     IconButton(onClick = {
                         viewModel.onEvent(ManageNoteEvents.PinUnpinNote(note))
+                        isPinned = !isPinned
                     }) {
                             Icon(
                                 imageVector = if (isPinned) Icons.Filled.Bookmark else Icons.Filled.BookmarkBorder,
