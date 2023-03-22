@@ -1,8 +1,8 @@
-# NotesApp
+# Material 3 Notes App
 An android notes app that follows the clean architecture rules by Robert Martin (Uncle Bob)  & MVVM architecture introduced in Android. I have also tried to stick as much as i can to the best practices and recommandations advised by Google. 
 This project is inspired by the Philipp Lackner 'Clean Note' educational project.
 Libraries used so far in htis project: 
-Room, Jetpack Compose & Hilt for dependency Injection.
+Material 3, Room, Jetpack Compose & Hilt for dependency Injection.
 Project still in progress...
 
 
