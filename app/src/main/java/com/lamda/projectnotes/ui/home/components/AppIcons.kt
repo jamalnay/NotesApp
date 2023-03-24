@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
-import com.lamda.projectnotes.data.data_source.local.Model.Note
+import com.lamda.projectnotes.data.data_source.local.model.Note
 
 
 @Composable

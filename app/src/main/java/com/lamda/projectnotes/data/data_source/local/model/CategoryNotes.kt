@@ -1,4 +1,4 @@
-package com.lamda.projectnotes.data.data_source.local.Model
+package com.lamda.projectnotes.data.data_source.local.model
 
 import androidx.room.Embedded
 import androidx.room.Relation

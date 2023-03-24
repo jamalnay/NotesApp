@@ -5,13 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.lamda.projectnotes.data.data_source.local.Model.Note
+import com.lamda.projectnotes.data.data_source.local.model.Note
 import com.lamda.projectnotes.domain.use_cases.NoteUseCases
 import com.lamda.projectnotes.ui.theme.White80
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import androidx.compose.runtime.saveable.rememberSaveable as rememberSaveable1
 
 
 data class NoteUiState(
@@ -35,8 +34,6 @@ class NoteManagementViewModel @Inject constructor(
 
     private var _noteState = mutableStateOf(NoteUiState())
     val noteState: State<NoteUiState> = _noteState
-
-
 
     private var noteId: Int? = null
 

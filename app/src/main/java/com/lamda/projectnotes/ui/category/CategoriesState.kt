@@ -1,6 +1,6 @@
 package com.lamda.projectnotes.ui.category
 
-import com.lamda.projectnotes.data.data_source.local.Model.Category
+import com.lamda.projectnotes.data.data_source.local.model.Category
 
 data class CategoriesState(
     val listOfCategories: List<Category>,

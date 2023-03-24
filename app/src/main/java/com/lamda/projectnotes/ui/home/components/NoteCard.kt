@@ -13,7 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.lamda.projectnotes.data.data_source.local.Model.Note
+import com.lamda.projectnotes.data.data_source.local.model.Note
 import com.lamda.projectnotes.ui.utils.dateConverter
 
 

@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.SecureFlagPolicy
-import com.lamda.projectnotes.data.data_source.local.Model.Category
+import com.lamda.projectnotes.data.data_source.local.model.Category
 import com.lamda.projectnotes.ui.home.HomeEvents
 import com.lamda.projectnotes.ui.home.HomeViewModel
 

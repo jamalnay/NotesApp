@@ -1,7 +1,7 @@
 package com.lamda.projectnotes.data.data_source.local.dao
 
 import androidx.room.*
-import com.lamda.projectnotes.data.data_source.local.Model.Category
+import com.lamda.projectnotes.data.data_source.local.model.Category
 import kotlinx.coroutines.flow.Flow
 
 @Dao

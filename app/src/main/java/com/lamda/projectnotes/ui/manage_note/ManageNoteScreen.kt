@@ -1,15 +1,21 @@
 package com.lamda.projectnotes.ui.manage_note
 
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.lamda.projectnotes.ui.AppDestinations
 import com.lamda.projectnotes.ui.manage_note.components.ManageNoteCard
 
 
@@ -17,11 +23,13 @@ import com.lamda.projectnotes.ui.manage_note.components.ManageNoteCard
 @Composable
 fun ManageNoteScreen(
     navController: NavController,
-    viewModel: NoteManagementViewModel = hiltViewModel(),
+    viewModel: NoteManagementViewModel = hiltViewModel()
 ) {
 
     val note = viewModel.noteState.value.note
     var isPinned by remember { mutableStateOf(false) }
+    //fontSize needs to be stateless and the font style should be changing
+    // (bodysmall,bodymedium than body large )from an enum or som kind of state
     var noteFontSize by rememberSaveable { mutableStateOf(16) }
     isPinned = note.isPinned
 
@@ -76,7 +84,70 @@ fun ManageNoteScreen(
             )
         },
         bottomBar = {
-        }
+            NavigationBar(
+        ) {
+            NavigationBarItem(
+                modifier = Modifier.wrapContentSize(),
+                selected = false,
+                onClick = { /*TODO*/ },
+                label = {
+                    Text(
+                        text = "Move to trash",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                },
+                icon = {
+                    Icon(
+                        tint = MaterialTheme.colorScheme.error,
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Move note to trash")}
+            )
+
+            NavigationBarItem(
+                modifier = Modifier.wrapContentSize(),
+                selected = false,
+                onClick = { /*TODO*/ },
+                label = {
+                    Text(
+                        text = "Obscure",
+                        style = MaterialTheme.typography.labelSmall,
+                    )
+                },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.VisibilityOff,
+                        contentDescription = "Obscure")}
+            )
+
+            NavigationBarItem(
+                modifier = Modifier.wrapContentSize(),
+                selected = false,
+                onClick = { /*TODO*/ },
+                label = {
+                    Text(
+                        text = "Share",
+                        style = MaterialTheme.typography.labelSmall,
+                    )
+                },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = "Share")}
+            )
+            FloatingActionButton(
+                onClick = { /*navController.navigate(AppDestinations.CreateUpdateNote.route + "?noteId=${note.noteId}")*/ },
+                modifier = Modifier.padding(8.dp),
+                content = {
+                    Icon(
+                        imageVector = Icons.Default.Create,
+                        contentDescription = "Edit Note"
+                    )
+                },
+                containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+            )
+        } }
     ) { PaddingValues ->
         ManageNoteCard(
             note = note,

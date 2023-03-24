@@ -3,6 +3,8 @@ package com.lamda.projectnotes.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -19,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -41,7 +44,7 @@ class MainActivity : ComponentActivity() {
                         }
                         )
                     ) {
-                        ManageNoteScreen(navController = navController)
+                            ManageNoteScreen(navController = navController)
                     }
                     composable(
                         route = AppDestinations.CreateUpdateNote.route + "?noteId={noteId}",

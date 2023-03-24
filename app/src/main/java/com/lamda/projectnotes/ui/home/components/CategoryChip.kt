@@ -11,7 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.lamda.projectnotes.data.data_source.local.Model.Category
+import com.lamda.projectnotes.data.data_source.local.model.Category
 import com.lamda.projectnotes.ui.home.HomeEvents
 import com.lamda.projectnotes.ui.home.HomeViewModel
 

@@ -1,6 +1,6 @@
 package com.lamda.projectnotes.data.data_source.local.repository
 
-import com.lamda.projectnotes.data.data_source.local.Model.Category
+import com.lamda.projectnotes.data.data_source.local.model.Category
 import com.lamda.projectnotes.data.data_source.local.dao.CategoryDAO
 import com.lamda.projectnotes.domain.repository.CategoryRepository
 import kotlinx.coroutines.flow.Flow
