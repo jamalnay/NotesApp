@@ -50,6 +50,7 @@ class NoteManagementViewModel @Inject constructor(
     fun onEvent(manageNoteEvents: ManageNoteEvents) {
         when (manageNoteEvents) {
             is ManageNoteEvents.PinUnpinNote -> pinUnpinNote(manageNoteEvents.note)
+            is ManageNoteEvents.DeleteNote -> deleteNote(manageNoteEvents.note)
         }
     }
 
@@ -57,6 +58,11 @@ class NoteManagementViewModel @Inject constructor(
     private fun pinUnpinNote(note: Note) {
         val pinnedUnpinnedNote = note.copy(isPinned = !note.isPinned)
         viewModelScope.launch { noteUseCases.createUpdateNote(pinnedUnpinnedNote) }
+    }
+
+    private fun deleteNote(note: Note) {
+        val deletedNote = note.copy(isDeleted = true)
+        viewModelScope.launch { noteUseCases.createUpdateNote(deletedNote) }
     }
 
 

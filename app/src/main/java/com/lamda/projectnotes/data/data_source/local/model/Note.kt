@@ -32,6 +32,9 @@ data class Note(
 
     @ColumnInfo(name = "note_cat_name") //a quick fix to show the right category for each note, this is not an optimal solution
     val noteCategoryName: String,
+
+    @ColumnInfo(name = "is_deleted")
+    val isDeleted: Boolean = false,
 ) {
     companion object {
         val noteColors =

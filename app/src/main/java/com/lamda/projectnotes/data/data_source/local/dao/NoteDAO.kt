@@ -8,12 +8,12 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface NoteDAO {
 
-    @Query("SELECT * FROM note ORDER BY NOT is_pinned,creation_time DESC") //TODO() solve the ordering problem
+    @Query("SELECT * FROM note WHERE is_deleted = FALSE ORDER BY NOT is_pinned,creation_time DESC") //TODO() solve the ordering problem
     fun getAllNotes(): Flow<List<Note>>
 
     //Grab notes of selected categories
     @Transaction
-    @Query("SELECT * FROM note WHERE note_cat_id = :cat_id ORDER BY NOT is_pinned,creation_time DESC")
+    @Query("SELECT * FROM note WHERE note_cat_id = :cat_id AND is_deleted = FALSE ORDER BY NOT is_pinned,creation_time DESC")
     fun getNotesForCategory(cat_id: Int): Flow<List<Note>>
 
     @Query("SELECT * FROM note WHERE note_id = :noteId")
