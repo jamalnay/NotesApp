@@ -5,6 +5,9 @@ import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.Create
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -36,6 +39,8 @@ fun ManageNoteScreen(
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
+    var isActionsMenuExpanded by remember { mutableStateOf(false) }
+
 
 
     Scaffold(
@@ -59,6 +64,85 @@ fun ManageNoteScreen(
                     }
                 },
                 actions = {
+                    IconButton(onClick = { isActionsMenuExpanded = true }) {
+                        Icon(Icons.Default.MoreVert, contentDescription = "Note actions")
+                    }
+                    DropdownMenu(
+                        expanded = isActionsMenuExpanded,
+                        onDismissRequest = { isActionsMenuExpanded = false }
+                    )
+                    {
+                        DropdownMenuItem(
+                            text = { Text("Edit note") },
+                            onClick = {
+                                      /*navController.navigate(AppDestinations.CreateUpdateNote.route + "?noteId=${note.noteId}")*/
+                                        isActionsMenuExpanded = false
+                                      },
+                            leadingIcon = {
+                                Icon(
+                                    Icons.Outlined.Create,
+                                    contentDescription = "edit note"
+                                )
+                            })
+                        DropdownMenuItem(
+                            text = { Text("Obscure note") },
+                            onClick = {
+                                      /* Handle edit! */
+                                        isActionsMenuExpanded = false
+                                      },
+                            leadingIcon = {
+                                Icon(
+                                    Icons.Outlined.VisibilityOff,
+                                    contentDescription = "obscure note"
+                                )
+                            })
+                        DropdownMenuItem(
+                            text = { Text("Move to trash", color = MaterialTheme.colorScheme.error) },
+                            onClick = {
+                                viewModel.onEvent(ManageNoteEvents.MoveToTrash(note))
+                                scope.launch {
+                                    isActionsMenuExpanded = false
+                                    //snackbar text needs to be adjusted in center
+                                    snackbarHostState.showSnackbar(
+                                        message = "Note Moved To Trash Successfully...",
+                                        duration = SnackbarDuration.Short
+                                    )
+                                    navController.navigateUp()
+                                }
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    Icons.Outlined.Delete,
+                                    tint = MaterialTheme.colorScheme.error,
+                                    contentDescription = "move note to trash"
+                                )
+                            })
+
+                    }
+                }
+            )
+        },
+        bottomBar = {
+            BottomAppBar(
+                actions = {
+                    IconButton(onClick = {
+                        viewModel.onEvent(ManageNoteEvents.PinUnpinNote(note))
+                        isPinned = !isPinned
+                    }) {
+                        Icon(
+                            imageVector = if (isPinned) Icons.Filled.Bookmark else Icons.Filled.BookmarkBorder,
+                            contentDescription = "Pin/Unpin note"
+                        )
+                    }
+
+                    IconButton(onClick = {
+                        shareNote(note,context)
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Share,
+                            contentDescription = "Share")
+                    }
+
                     IconButton(onClick = {
                         if (noteFontSize == 19) noteFontSize = 16
                         else noteFontSize++
@@ -69,100 +153,9 @@ fun ManageNoteScreen(
                         )
                     }
 
-                    IconButton(onClick = {
-                        //TODO() Implement edit note screen
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Edit,
-                            contentDescription = "Edit Note"
-                        )
-                    }
-
-                    IconButton(onClick = {
-                        viewModel.onEvent(ManageNoteEvents.PinUnpinNote(note))
-                        isPinned = !isPinned
-                    }) {
-                            Icon(
-                                imageVector = if (isPinned) Icons.Filled.Bookmark else Icons.Filled.BookmarkBorder,
-                                contentDescription = "Pin/Unpin note"
-                            )
-                    }
-
                 }
             )
-        },
-        bottomBar = {
-            NavigationBar(
-        ) {
-            NavigationBarItem(
-                modifier = Modifier.wrapContentSize(),
-                selected = false,
-                onClick = {
-                    viewModel.onEvent(ManageNoteEvents.DeleteNote(note))
-                    scope.launch {
-                        //snackbar text needs to be adjusted in center
-                        snackbarHostState.showSnackbar("  Note Moved To Trash Successfully...")
-                        navController.navigateUp()
-                    }
-                          },
-                label = {
-                    Text(
-                        text = "Move to trash",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.error,
-                    )
-                },
-                icon = {
-                    Icon(
-                        tint = MaterialTheme.colorScheme.error,
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = "Move note to trash")}
-            )
-
-            NavigationBarItem(
-                modifier = Modifier.wrapContentSize(),
-                selected = false,
-                onClick = { /*TODO*/ },
-                label = {
-                    Text(
-                        text = "Obscure",
-                        style = MaterialTheme.typography.labelSmall,
-                    )
-                },
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.VisibilityOff,
-                        contentDescription = "Obscure")}
-            )
-
-            NavigationBarItem(
-                modifier = Modifier.wrapContentSize(),
-                selected = false,
-                onClick = { shareNote(note,context) },
-                label = {
-                    Text(
-                        text = "Share",
-                        style = MaterialTheme.typography.labelSmall,
-                    )
-                },
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.Share,
-                        contentDescription = "Share")}
-            )
-            FloatingActionButton(
-                onClick = { /*navController.navigate(AppDestinations.CreateUpdateNote.route + "?noteId=${note.noteId}")*/ },
-                modifier = Modifier.padding(8.dp),
-                content = {
-                    Icon(
-                        imageVector = Icons.Default.Create,
-                        contentDescription = "Edit Note"
-                    )
-                },
-                containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
-            )
-        } }
+             }
     ) { PaddingValues ->
         ManageNoteCard(
             note = note,
@@ -180,8 +173,7 @@ fun ManageNoteScreen(
 fun shareNote(note: Note, context: Context) {
     val intent = Intent(Intent.ACTION_SEND).apply {
         type = "text/plain"
-        putExtra(Intent.EXTRA_TITLE, note.noteTitle)
-        putExtra(Intent.EXTRA_TEXT, note.noteContent)
+        putExtra(Intent.EXTRA_TEXT, note.noteTitle + "\n" + note.noteContent)
     }
     context.startActivity(
         Intent.createChooser(

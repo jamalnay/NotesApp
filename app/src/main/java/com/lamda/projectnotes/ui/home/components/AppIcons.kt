@@ -4,16 +4,16 @@ package com.lamda.projectnotes.ui.home.components
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
-import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconToggleButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.outlined.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
 import com.lamda.projectnotes.data.data_source.local.model.Note
+import com.lamda.projectnotes.ui.manage_note.ManageNoteEvents
+import com.lamda.projectnotes.ui.manage_note.NoteManagementViewModel
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -41,23 +41,5 @@ fun PinNoteButton(
     }
 }
 
-
-/* Not implemented because Material 3 Bottom sheets not implemented yet*/
-@Composable
-fun NoteOptions(
-    note: Note,
-    modifier: Modifier = Modifier,
-) {
-
-    IconButton(onClick = { /*TODO*/ }) {
-        Icon(
-            modifier = modifier,
-            imageVector = Icons.Outlined.MoreVert,
-            contentDescription = "Note Options",
-            tint = MaterialTheme.colorScheme.primary
-        )
-
-    }
-}
 
 

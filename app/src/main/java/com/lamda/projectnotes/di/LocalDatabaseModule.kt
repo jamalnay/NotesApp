@@ -51,6 +51,7 @@ object LocalDatabaseModule {
             createUpdateNote = CreateUpdateNote(repository),
             deleteNote = DeleteNote(repository),
             getAllNotes = GetAllNotes(repository),
+            getDeletedNotes = GetDeletedNotes(repository),
             getNotesForCategory = GetNotesForCategory(repository),
             getNote = GetNote(repository)
         )

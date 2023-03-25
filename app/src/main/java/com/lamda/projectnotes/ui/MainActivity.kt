@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.*
-import androidx.compose.animation.core.tween
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -14,6 +13,7 @@ import androidx.navigation.navArgument
 import com.lamda.projectnotes.ui.category.ManageCategories
 import com.lamda.projectnotes.ui.create_update.CreateUpdateScreen
 import com.lamda.projectnotes.ui.home.HomeScreen
+import com.lamda.projectnotes.ui.manage_note.DeletedNotes
 import com.lamda.projectnotes.ui.manage_note.ManageNoteScreen
 import com.lamda.projectnotes.ui.theme.ProjectNotesTheme
 import dagger.hilt.android.AndroidEntryPoint

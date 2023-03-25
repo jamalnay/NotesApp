@@ -11,6 +11,10 @@ class NoteRepositoryImpl @Inject constructor(private val noteDao: NoteDAO) : Not
         return noteDao.getAllNotes()
     }
 
+    override fun getDeletedNotes(): Flow<List<Note>> {
+        return noteDao.getDeletedNotes()
+    }
+
     override fun getNotesForCategory(catId: Int): Flow<List<Note>> {
         return noteDao.getNotesForCategory(catId)
     }

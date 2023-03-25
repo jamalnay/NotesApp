@@ -11,6 +11,9 @@ interface NoteDAO {
     @Query("SELECT * FROM note WHERE is_deleted = FALSE ORDER BY NOT is_pinned,creation_time DESC") //TODO() solve the ordering problem
     fun getAllNotes(): Flow<List<Note>>
 
+    @Query("SELECT * FROM note WHERE is_deleted = TRUE ORDER BY NOT is_pinned,creation_time DESC") //TODO() solve the ordering problem
+    fun getDeletedNotes(): Flow<List<Note>>
+
     //Grab notes of selected categories
     @Transaction
     @Query("SELECT * FROM note WHERE note_cat_id = :cat_id AND is_deleted = FALSE ORDER BY NOT is_pinned,creation_time DESC")

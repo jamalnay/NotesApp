@@ -9,6 +9,7 @@ import com.lamda.projectnotes.data.data_source.local.model.Note
 import com.lamda.projectnotes.domain.use_cases.NoteUseCases
 import com.lamda.projectnotes.ui.theme.White80
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,6 +27,10 @@ data class NoteUiState(
     ),
 )
 
+data class DeletedNotesState(
+    val listOfNotes: List<Note>,
+)
+
 @HiltViewModel
 class NoteManagementViewModel @Inject constructor(
     private val noteUseCases: NoteUseCases,
@@ -35,7 +40,11 @@ class NoteManagementViewModel @Inject constructor(
     private var _noteState = mutableStateOf(NoteUiState())
     val noteState: State<NoteUiState> = _noteState
 
+    private var _deletedNotesState = mutableStateOf(DeletedNotesState(emptyList()))
+    val deletedNotesState: State<DeletedNotesState> = _deletedNotesState
+
     private var noteId: Int? = null
+    private var getDeletedNotesJob: Job? = null
 
     init {
         noteId = savedStateHandle.get<Int>("noteId")
@@ -45,12 +54,38 @@ class NoteManagementViewModel @Inject constructor(
                     note = noteUseCases.getNote(noteId = noteId!!)
                 )
             }
+        viewModelScope.launch {
+            try {
+                getDeletedNotesList()
+            } catch (_: Exception) {
+            }
+        }
+
+    }
+
+    override fun onCleared() {
+        getDeletedNotesJob?.cancel()
+        super.onCleared()
     }
 
     fun onEvent(manageNoteEvents: ManageNoteEvents) {
         when (manageNoteEvents) {
             is ManageNoteEvents.PinUnpinNote -> pinUnpinNote(manageNoteEvents.note)
+            is ManageNoteEvents.MoveToTrash -> moveToTrash(manageNoteEvents.note)
             is ManageNoteEvents.DeleteNote -> deleteNote(manageNoteEvents.note)
+            is ManageNoteEvents.RestoreNote -> restoreNote(manageNoteEvents.note)
+        }
+    }
+
+    private fun getDeletedNotesList() {
+        getDeletedNotesJob?.cancel()
+        getDeletedNotesJob = viewModelScope.launch {
+            noteUseCases.getDeletedNotes()
+                .collect { notes ->
+                    _deletedNotesState.value = deletedNotesState.value.copy(
+                        listOfNotes = notes
+                    )
+                }
         }
     }
 
@@ -60,9 +95,18 @@ class NoteManagementViewModel @Inject constructor(
         viewModelScope.launch { noteUseCases.createUpdateNote(pinnedUnpinnedNote) }
     }
 
-    private fun deleteNote(note: Note) {
+    private fun moveToTrash(note: Note) {
         val deletedNote = note.copy(isDeleted = true)
         viewModelScope.launch { noteUseCases.createUpdateNote(deletedNote) }
+    }
+
+    private fun deleteNote(note: Note) {
+        viewModelScope.launch { noteUseCases.deleteNote(note) }
+    }
+
+    private fun restoreNote(note: Note) {
+        val restoredNote = note.copy(isDeleted = false)
+        viewModelScope.launch { noteUseCases.createUpdateNote(restoredNote) }
     }
 
 
