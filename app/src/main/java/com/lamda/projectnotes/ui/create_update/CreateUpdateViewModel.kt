@@ -24,6 +24,9 @@ class CreateUpdateViewModel @Inject constructor(
     val categoriesState: State<CategoriesState> = _categoriesState
 
     private var getCategoriesJob: Job? = null
+    private var saveNoteJob: Job? = null
+
+    private var notesCount = mutableStateOf(0)
 
     init {
         viewModelScope.launch {
@@ -37,6 +40,7 @@ class CreateUpdateViewModel @Inject constructor(
 
     override fun onCleared() {
         getCategoriesJob?.cancel()
+        saveNoteJob?.cancel()
         super.onCleared()
     }
 
@@ -74,7 +78,8 @@ class CreateUpdateViewModel @Inject constructor(
         categoryId: Int,
         categoryName: String,
     ) {
-        viewModelScope.launch {
+        saveNoteJob?.cancel()
+        saveNoteJob = viewModelScope.launch {
             noteUseCases.createUpdateNote.invoke(
                 Note(
                     noteTitle = title,
@@ -86,10 +91,9 @@ class CreateUpdateViewModel @Inject constructor(
                     creationTime = System.currentTimeMillis() / 1000
                 )
             )
-
-            //TODO() fix the category counter
+            notesCount.value = categoryUseCases.getCatById(categoryId).notesCount +1
             categoryUseCases.createUpdateCategory(Category(
-                categoryId,categoryName,+1
+                categoryId,categoryName,notesCount.value
             ))
         }
 
@@ -97,3 +101,12 @@ class CreateUpdateViewModel @Inject constructor(
     }
 
 }
+
+//viewModelScope.launch {
+//    notesCount.value = categoryUseCases.getCatById(categoryId).notesCount +1
+//}
+//viewModelScope.launch {
+//    categoryUseCases.createUpdateCategory(Category(
+//        categoryId,categoryName,notesCount.value
+//    ))
+//}

@@ -41,8 +41,6 @@ fun ManageCategories(
     var showDialog by rememberSaveable { mutableStateOf(false) }
     var text by rememberSaveable { mutableStateOf("") }
 
-    var hideNotificationCard by remember { mutableStateOf(false) }
-
 
     Scaffold(
         snackbarHost = {
@@ -112,13 +110,13 @@ fun ManageCategories(
                 )
             }
         }
-
         if (showDialog) {
             AlertDialog(
                 iconContentColor = MaterialTheme.colorScheme.primary,
                 onDismissRequest = {
-                                        showDialog = false
-                                        text = ""
+                    // TODO() for some reason the text here is note resetting
+                    text = ""
+                    showDialog = false
                                    },
                 confirmButton = {
                     TextButton(onClick = {

@@ -11,7 +11,7 @@ interface CategoryDAO {
     fun getAllCategories(): Flow<List<Category>>
 
     @Query("SELECT * FROM category where cat_id = :catId")
-    fun getCatById(catId: Int): Category
+    suspend fun getCatById(catId: Int): Category
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCategory(category: Category)
