@@ -8,7 +8,11 @@ Project still in progress...
 
 [App Design Screen Shoots]
 
-![Home Screen](https://user-images.githubusercontent.com/105993884/223730720-93761cba-6e99-4186-9d2b-043ecc2b7ef3.png)
-![Order Notes](https://user-images.githubusercontent.com/105993884/223730734-718c4529-2ef0-44b6-81ed-362628eb81c6.png)
-![Note Screen](https://user-images.githubusercontent.com/105993884/223730764-1c12345c-ffd7-44c5-9b77-c18a7ebc4f27.png)
-![Navigation Drawer](https://user-images.githubusercontent.com/105993884/223730795-1b1ca4ed-2109-49f5-b91c-2cb5bb12f189.png)
+(https://i.ibb.co/W0MqHFf/Screenshot-2023-03-27-21-24-42-464-com-lamda-projectnotes.jpg)
+(https://i.ibb.co/y0bTmkZ/Screenshot-2023-03-27-21-24-57-511-com-lamda-projectnotes.jpg)
+(https://i.ibb.co/MGT40qD/Screenshot-2023-03-27-21-25-10-610-com-lamda-projectnotes.jpg)
+(https://i.ibb.co/tsJHdWn/Screenshot-2023-03-27-21-25-26-144-com-lamda-projectnotes.jpg)
+(https://i.ibb.co/pWCVX8H/Screenshot-2023-03-27-21-25-38-495-com-lamda-projectnotes.jpg)
+(https://i.ibb.co/SxrSsBh/Screenshot-2023-03-27-21-25-58-500-com-lamda-projectnotes.jpg)
+
+
