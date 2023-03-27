@@ -9,3 +9,7 @@ data class CategoriesState(
 data class SelectedCategoryState(
     val selectedCategory: Category?,
 )
+
+data class CategoryState(
+    val category: Category?,
+)

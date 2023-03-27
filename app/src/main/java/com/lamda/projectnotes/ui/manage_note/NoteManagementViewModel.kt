@@ -5,7 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lamda.projectnotes.data.data_source.local.model.Category
 import com.lamda.projectnotes.data.data_source.local.model.Note
+import com.lamda.projectnotes.domain.use_cases.CategoryUseCases
 import com.lamda.projectnotes.domain.use_cases.NoteUseCases
 import com.lamda.projectnotes.ui.theme.White80
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,6 +36,7 @@ data class DeletedNotesState(
 @HiltViewModel
 class NoteManagementViewModel @Inject constructor(
     private val noteUseCases: NoteUseCases,
+    private val categoryUseCases: CategoryUseCases,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -97,7 +100,10 @@ class NoteManagementViewModel @Inject constructor(
 
     private fun moveToTrash(note: Note) {
         val deletedNote = note.copy(isDeleted = true)
-        viewModelScope.launch { noteUseCases.createUpdateNote(deletedNote) }
+        viewModelScope.launch {
+            noteUseCases.createUpdateNote(deletedNote)
+            categoryUseCases.createUpdateCategory(Category(deletedNote.noteCategory,deletedNote.noteCategoryName,-1))
+        }
     }
 
     private fun deleteNote(note: Note) {
@@ -106,7 +112,10 @@ class NoteManagementViewModel @Inject constructor(
 
     private fun restoreNote(note: Note) {
         val restoredNote = note.copy(isDeleted = false)
-        viewModelScope.launch { noteUseCases.createUpdateNote(restoredNote) }
+        viewModelScope.launch {
+            noteUseCases.createUpdateNote(restoredNote)
+            categoryUseCases.createUpdateCategory(Category(restoredNote.noteCategory,restoredNote.noteCategoryName,+1))
+        }
     }
 
 

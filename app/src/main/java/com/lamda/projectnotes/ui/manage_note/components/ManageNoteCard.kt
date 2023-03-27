@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lamda.projectnotes.data.data_source.local.model.Note
@@ -131,12 +132,14 @@ fun DeletedNoteCard(
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.primary
             )
-            DeletedNoteOptions(
-                note = note,
-                viewModel = viewModel,
-                scope = scope,
-                snackbarHostState = snackbarHostState
-            )
+            Box {
+                DeletedNoteOptions(
+                    note = note,
+                    viewModel = viewModel,
+                    scope = scope,
+                    snackbarHostState = snackbarHostState
+                )
+            }
 
         }
         Row(
@@ -178,15 +181,14 @@ fun DeletedNoteOptions(
 ) {
     var isActionsMenuExpanded by remember { mutableStateOf(false) }
 
-    IconButton(onClick = {
-        isActionsMenuExpanded = true
-    }) {
+    IconButton(
+        onClick = {isActionsMenuExpanded = true}
+    ) {
         Icon(
             imageVector = Icons.Outlined.MoreVert,
             contentDescription = "Note Options",
             tint = MaterialTheme.colorScheme.primary
         )
-
     }
 
     DropdownMenu(
@@ -199,6 +201,10 @@ fun DeletedNoteOptions(
             onClick = {
                 viewModel.onEvent(manageNoteEvents = ManageNoteEvents.RestoreNote(note))
                 isActionsMenuExpanded = false
+                scope.launch {
+                    //snackbar text needs to be adjusted in center
+                    snackbarHostState.showSnackbar("Note Restored.")
+                }
                       },
             leadingIcon = {
                 Icon(
@@ -213,7 +219,7 @@ fun DeletedNoteOptions(
                 isActionsMenuExpanded = false
                 scope.launch {
                     //snackbar text needs to be adjusted in center
-                    snackbarHostState.showSnackbar("Note Deleted Successfully...")
+                    snackbarHostState.showSnackbar("Note Deleted.")
                 }
 
             },

@@ -115,7 +115,6 @@ fun HomeScreen(
                     NoteCard(
                         note = note,
                         onPinToggled = { viewModel.onEvent(HomeEvents.PinUnpinNote(note)) },
-                        isPinned = note.isPinned,
                         modifier = Modifier.clickable {
                             navController.navigate(AppDestinations.ManageNote.route + "?noteId=${note.noteId}")
                         }

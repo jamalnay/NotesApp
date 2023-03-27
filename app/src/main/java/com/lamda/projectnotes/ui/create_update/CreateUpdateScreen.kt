@@ -137,7 +137,7 @@ fun CreateUpdateScreen(
                                     onClick = {
                                         selectedOption = selectionOption.catName
                                         categoryName = selectionOption.catName
-                                        categoryId = selectionOption.catId
+                                        categoryId = selectionOption.catId!!
                                         isCategoriesMenuExpanded = false
                                     },
                                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,

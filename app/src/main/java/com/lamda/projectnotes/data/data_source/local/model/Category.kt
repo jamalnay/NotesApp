@@ -9,9 +9,12 @@ data class Category(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "cat_id")
-    val catId: Int = 0,
+    val catId: Int?,
 
     @ColumnInfo(name = "cat_name")
     val catName: String,
+
+    @ColumnInfo(name = "notes_count")
+    val notesCount:Int = 0
 
     )

@@ -30,6 +30,8 @@ class HomeViewModel @Inject constructor(
     private val _notesState = mutableStateOf(NotesState(emptyList()))
     val notesState: State<NotesState> = _notesState
 
+
+
     private val _categoriesState = mutableStateOf(CategoriesState(emptyList()))
     val categoriesState: State<CategoriesState> = _categoriesState
 
@@ -81,7 +83,6 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onEvent(homeEvents: HomeEvents) {
-
         when (homeEvents) {
             is HomeEvents.PinUnpinNote -> pinUnpinNote(homeEvents.note)
             is HomeEvents.SelectCategory -> selectCategory(homeEvents.category)
@@ -132,7 +133,7 @@ class HomeViewModel @Inject constructor(
         if (category.catId == -1) {
             getNotesList()
         } else {
-            getNotesForCategory(category.catId)
+            getNotesForCategory(category.catId!!)
         }
     }
 
