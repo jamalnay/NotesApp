@@ -5,12 +5,12 @@ Material 3, Room, Jetpack Compose & Hilt for dependency Injection.
 Project still in progress...
 
 
-
+https://i.ibb.co/q5Yh6QL/all1.png
 
 
 ## Screenshots
-<img src="https://i.ibb.co/m85dpWr/all1.png"/>
-<img src="https://i.ibb.co/vPMby1L/all2.png"/>
+<img src="https://i.ibb.co/q5Yh6QL/all1.png"/>
+<img src="https://i.ibb.co/d2HSCBk/all2.png"/>
 
 
 
