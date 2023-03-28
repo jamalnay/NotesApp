@@ -28,14 +28,10 @@ class ManageCategoriesViewModel @Inject constructor(
     val categoriesState: State<CategoriesState> = _categoriesState
 
 
-    private var getNotesForCategoryJob: Job? = null
     private var getCategoriesJob: Job? = null
-
-    val notesForCategoryCount: MutableState<Int> = mutableStateOf(0)
 
 
     init {
-
         viewModelScope.launch {
             try {
                 getCategoriesList()
@@ -64,10 +60,14 @@ class ManageCategoriesViewModel @Inject constructor(
     }
 
     private fun deleteCategory(category: Category){
-
+        viewModelScope.launch {
+            categoryUseCases.deleteCategory(category = category)
+        }
     }
     private fun renameCategory(category: Category){
-
+        viewModelScope.launch {
+            categoryUseCases.createUpdateCategory(category = category)
+        }
     }
 
 

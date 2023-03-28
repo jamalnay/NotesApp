@@ -77,10 +77,6 @@ class NoteManagementViewModel @Inject constructor(
         moveToTrashJob?.cancel()
         moveToTrashJob = viewModelScope.launch {
             noteUseCases.createUpdateNote(deletedNote)
-            notesCount = categoryUseCases.getCatById(deletedNote.noteCategory).notesCount -1
-            categoryUseCases.createUpdateCategory(
-                Category(deletedNote.noteCategory,deletedNote.noteCategoryName,notesCount)
-            )
         }
     }
 
@@ -89,8 +85,6 @@ class NoteManagementViewModel @Inject constructor(
         restoreNoteJob?.cancel()
         restoreNoteJob = viewModelScope.launch {
             noteUseCases.createUpdateNote(restoredNote)
-            notesCount = categoryUseCases.getCatById(restoredNote.noteCategory).notesCount +1
-            categoryUseCases.createUpdateCategory(Category(restoredNote.noteCategory,restoredNote.noteCategoryName,notesCount))
         }
     }
 
@@ -112,6 +106,12 @@ class NoteManagementViewModel @Inject constructor(
     }
 
     private fun deleteNote(note: Note) {
-        viewModelScope.launch { noteUseCases.deleteNote(note) }
+        viewModelScope.launch {
+            notesCount = categoryUseCases.getCatById(note.noteCategory).notesCount -1
+            categoryUseCases.createUpdateCategory(
+                Category(note.noteCategory,note.noteCategoryName,notesCount)
+            )
+            noteUseCases.deleteNote(note)
+        }
     }
 }

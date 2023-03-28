@@ -104,7 +104,7 @@ fun ManageDeletedNotes(
                 items(notes) { note ->
                     DeletedNoteCard(
                         note = note,
-                        modifier = Modifier.padding(16.dp),
+                        modifier = Modifier.padding(start = 16.dp,end = 16.dp, bottom = 8.dp, top = 8.dp),
                         viewModel = viewModel,
                         scope = scope,
                         snackbarHostState = snackbarHostState
