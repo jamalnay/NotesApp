@@ -9,7 +9,7 @@ import com.lamda.projectnotes.data.data_source.local.model.Category
 import com.lamda.projectnotes.data.data_source.local.model.Note
 import com.lamda.projectnotes.domain.use_cases.CategoryUseCases
 import com.lamda.projectnotes.domain.use_cases.NoteUseCases
-import com.lamda.projectnotes.ui.category.CategoriesState
+import com.lamda.projectnotes.ui.AppStates.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch

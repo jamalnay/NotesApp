@@ -1,5 +1,6 @@
 package com.lamda.projectnotes.ui
 
+import com.lamda.projectnotes.data.data_source.local.model.Category
 import com.lamda.projectnotes.data.data_source.local.model.Note
 import com.lamda.projectnotes.ui.theme.White80
 
@@ -17,8 +18,20 @@ class AppStates {
         ),
     )
 
+    data class NotesState(
+        val listOfNotes: List<Note>,
+    )
+
     data class DeletedNotesState(
         val listOfNotes: List<Note>,
+    )
+
+    data class CategoriesState(
+        val listOfCategories: List<Category>,
+    )
+
+    data class SelectedCategoryState(
+        val selectedCategory: Category?,
     )
 
 }

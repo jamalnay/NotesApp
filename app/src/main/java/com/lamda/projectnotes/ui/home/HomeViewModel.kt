@@ -2,23 +2,19 @@ package com.lamda.projectnotes.ui.home
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lamda.projectnotes.data.data_source.local.model.Category
 import com.lamda.projectnotes.data.data_source.local.model.Note
 import com.lamda.projectnotes.domain.use_cases.CategoryUseCases
 import com.lamda.projectnotes.domain.use_cases.NoteUseCases
-import com.lamda.projectnotes.ui.category.CategoriesState
-import com.lamda.projectnotes.ui.category.SelectedCategoryState
+import com.lamda.projectnotes.ui.AppStates.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class NotesState(
-    val listOfNotes: List<Note>,
-)
+
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
