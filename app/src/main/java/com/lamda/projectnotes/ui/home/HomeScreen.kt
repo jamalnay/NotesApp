@@ -26,7 +26,7 @@ fun HomeScreen(
     navController: NavController,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
-    val notes = viewModel.notesState.value.listOfNotes
+    val notes = viewModel.notesState.value.listOfNotes.toList()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     val coroutineScope = rememberCoroutineScope()
@@ -114,7 +114,6 @@ fun HomeScreen(
                 items(notes) { note ->
                     NoteCard(
                         note = note,
-                        onPinToggled = { viewModel.onEvent(HomeEvents.PinUnpinNote(note)) },
                         modifier = Modifier.clickable {
                             navController.navigate(AppDestinations.ManageNote.route + "?noteId=${note.noteId}")
                         }

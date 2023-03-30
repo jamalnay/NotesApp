@@ -109,7 +109,7 @@ class NoteManagementViewModel @Inject constructor(
         viewModelScope.launch {
             notesCount = categoryUseCases.getCatById(note.noteCategory).notesCount -1
             categoryUseCases.createUpdateCategory(
-                Category(note.noteCategory,note.noteCategoryName,notesCount)
+                Category(note.noteCategory,note.categoryName,notesCount)
             )
             noteUseCases.deleteNote(note)
         }

@@ -201,8 +201,9 @@ fun CategoryNoteCard(
             horizontalArrangement = Arrangement.SpaceBetween
         )
         {
-            if (!renameState) Text(text = category.catName, modifier = Modifier.weight(2f))
-            else
+            if (!renameState) {
+                Text(text = category.catName, modifier = Modifier.weight(2f))
+            } else
             TextField(
                 value = newCategoryName,
                 onValueChange = { newCategoryName = it },

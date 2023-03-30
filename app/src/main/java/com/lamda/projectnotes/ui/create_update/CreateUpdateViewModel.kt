@@ -84,11 +84,11 @@ class CreateUpdateViewModel @Inject constructor(
                 Note(
                     noteTitle = title,
                     noteContent = content,
-                    noteCategoryName = categoryName,
                     noteCategory = categoryId,
                     isPinned = isPinned,
                     noteColor = Note.noteColors.random().toArgb(),
-                    creationTime = System.currentTimeMillis() / 1000
+                    creationTime = System.currentTimeMillis() / 1000,
+                    categoryName = categoryName
                 )
             )
             notesCount.value = categoryUseCases.getCatById(categoryId).notesCount +1

@@ -27,14 +27,14 @@ data class Note(
     @ColumnInfo(name = "is_pinned")
     val isPinned: Boolean,
 
-    @ColumnInfo(name = "note_cat_id")
-    val noteCategory: Int,
-
-    @ColumnInfo(name = "note_cat_name") //a quick fix to show the right category for each note, this is not an optimal solution
-    val noteCategoryName: String,
-
     @ColumnInfo(name = "is_deleted")
     val isDeleted: Boolean = false,
+
+    @ColumnInfo(name = "cat_id")
+    val noteCategory: Int,
+
+    @ColumnInfo(name = "cat_name")
+    val categoryName: String,
 ) {
     companion object {
         val noteColors =

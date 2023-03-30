@@ -48,7 +48,7 @@ fun ManageNoteCard(
                 modifier = Modifier
                     .padding(8.dp, top = 16.dp)
                     .fillMaxWidth(),
-                text = note.noteCategoryName,
+                text = note.categoryName,
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -128,7 +128,7 @@ fun DeletedNoteCard(
             Text(
                 modifier = Modifier
                     .padding(8.dp),
-                text = note.noteCategoryName,
+                text = note.categoryName,
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -231,27 +231,4 @@ fun DeletedNoteOptions(
                 )
             })
     }
-}
-
-
-
-@Preview
-@Composable
-fun PreviewNoteItem() {
-    ManageNoteCard(
-        note = Note(
-            5,
-            "What lorem ipsum text is?",
-            "Hello everyone this is " +
-                    "my first note, happy to meet you all, Thank you. In publishing and graphic design, Lorem ipsum is " +
-                    "a placeholder text commonly used to demonstr " +
-                    "ate the visual form of a document or a typeface",
-            1677658911,
-            Note.noteColors.random().toArgb(),
-            false,
-            0,
-            "TestCategory"
-        ),
-        modifier = Modifier.wrapContentSize(), 20
-    )
 }

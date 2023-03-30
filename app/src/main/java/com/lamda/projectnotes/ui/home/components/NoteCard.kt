@@ -14,6 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.lamda.projectnotes.data.data_source.local.model.Category
 import com.lamda.projectnotes.data.data_source.local.model.Note
 import com.lamda.projectnotes.ui.utils.dateConverter
 
@@ -22,7 +23,6 @@ import com.lamda.projectnotes.ui.utils.dateConverter
 fun NoteCard(
     note: Note,
     modifier: Modifier = Modifier,
-    onPinToggled: (Note) -> Unit
 ) {
 
     //making the number of maxLines dynamic will give the home screen a bit of a dynamic look
@@ -78,7 +78,7 @@ fun NoteCard(
         {
             Text(
                 modifier = Modifier,
-                text = note.noteCategoryName,
+                text = note.categoryName,
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -94,49 +94,4 @@ fun NoteCard(
 
         }
     }
-}
-
-
-@Preview
-@Composable
-fun PreviewNoteItem() {
-    NoteCard(
-        note = Note(
-            5,
-            "What lorem ipsum text is?",
-            "Hello everyone this is " +
-                    "my first note, happy to meet you all, Thank you. In publishing and graphic design, Lorem ipsum is " +
-                    "a placeholder text commonly used to demonstr " +
-                    "ate the visual form of a document or a typeface",
-            1677658911,
-            Note.noteColors.random().toArgb(),
-            false,
-            0,
-            "TestCategory"
-        ),
-        onPinToggled = {},
-        modifier = Modifier.wrapContentSize()
-    )
-}
-
-@Preview
-@Composable
-fun PreviewTowNoteItem() {
-    NoteCard(
-        note = Note(
-            5,
-            "What lorem ipsum text is?",
-            "Hello everyone this is " +
-                    "my first note, happy to meet you all, Thank you. In publishing and graphic design, Lorem ipsum is " +
-                    "a placeholder text commonly used to demonstr " +
-                    "ate the visual form of a document or a typeface",
-            1677658911,
-            Note.noteColors.random().toArgb(),
-            true,
-            0,
-            "TestCategory"
-        ),
-        onPinToggled = {},
-        modifier = Modifier.wrapContentSize()
-    )
 }

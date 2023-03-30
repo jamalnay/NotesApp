@@ -1,6 +1,7 @@
 package com.lamda.projectnotes.data.data_source.local.dao
 
 import androidx.room.*
+import com.lamda.projectnotes.data.data_source.local.model.Category
 import com.lamda.projectnotes.data.data_source.local.model.Note
 import kotlinx.coroutines.flow.Flow
 
@@ -8,18 +9,48 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface NoteDAO {
 
-    @Query("SELECT * FROM note WHERE is_deleted = FALSE ORDER BY NOT is_pinned,creation_time DESC") //TODO() solve the ordering problem
+    @Query(
+            """
+            SELECT * FROM note 
+            JOIN(SELECT cat_id,cat_name FROM category) category 
+            ON note.cat_id = category.cat_id 
+            WHERE is_deleted = FALSE 
+            ORDER BY NOT is_pinned,creation_time DESC
+            """
+    ) //TODO() solve the ordering problem
     fun getAllNotes(): Flow<List<Note>>
 
-    @Query("SELECT * FROM note WHERE is_deleted = TRUE ORDER BY NOT is_pinned,creation_time DESC") //TODO() solve the ordering problem
+    @Query(
+            """
+            SELECT * FROM note 
+            JOIN(SELECT cat_id,cat_name FROM category) category 
+            ON note.cat_id = category.cat_id  
+            WHERE is_deleted = TRUE 
+            ORDER BY NOT is_pinned,creation_time DESC
+            """
+    ) //TODO() solve the ordering problem
     fun getDeletedNotes(): Flow<List<Note>>
 
     //Grab notes of selected categories
-    @Transaction
-    @Query("SELECT * FROM note WHERE note_cat_id = :cat_id AND is_deleted = FALSE ORDER BY NOT is_pinned,creation_time DESC")
+    @Query(
+            """
+            SELECT * FROM note
+            JOIN(SELECT cat_id,cat_name FROM category) category 
+            ON note.cat_id = category.cat_id  
+            WHERE note.cat_id = :cat_id AND is_deleted = FALSE
+            ORDER BY NOT is_pinned,creation_time DESC
+            """
+    )
     fun getNotesForCategory(cat_id: Int): Flow<List<Note>>
 
-    @Query("SELECT * FROM note WHERE note_id = :noteId")
+    @Query(
+            """
+            SELECT * FROM note
+            INNER JOIN(SELECT cat_id,cat_name FROM category) 
+            category ON note.cat_id = category.cat_id 
+            WHERE note_id = :noteId
+            """
+    )
     suspend fun getNote(noteId: Int): Note
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

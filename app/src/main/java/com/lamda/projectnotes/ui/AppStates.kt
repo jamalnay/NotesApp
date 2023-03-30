@@ -13,9 +13,10 @@ class AppStates {
             creationTime = System.currentTimeMillis() / 1000,
             noteColor = Note.noteColors.indexOf(White80),
             isPinned = false,
-            noteCategory = 0,
-            noteCategoryName = ""
-        ),
+            isDeleted = false,
+            categoryName = "",
+            noteCategory = 0
+        )
     )
 
     data class NotesState(
