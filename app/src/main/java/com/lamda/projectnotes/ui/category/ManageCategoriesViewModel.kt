@@ -9,6 +9,8 @@ import com.lamda.projectnotes.domain.use_cases.CategoryUseCases
 import com.lamda.projectnotes.ui.AppStates.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,8 +25,12 @@ class ManageCategoriesViewModel @Inject constructor(
     private val _categoriesState = mutableStateOf(CategoriesState(emptyList()))
     val categoriesState: State<CategoriesState> = _categoriesState
 
+    lateinit var listOfCats: Flow<List<Category>>
+
 
     private var getCategoriesJob: Job? = null
+
+
 
 
     init {
@@ -51,7 +57,7 @@ class ManageCategoriesViewModel @Inject constructor(
 
     private fun createCategory(catName:String){
         viewModelScope.launch {
-            categoryUseCases.createUpdateCategory(Category(null,catName))
+            categoryUseCases.createUpdateCategory(Category(null,catName,0))
         }
     }
 
@@ -78,7 +84,8 @@ class ManageCategoriesViewModel @Inject constructor(
                     _categoriesState.value = categoriesState.value.copy(
                         listOfCategories = categories
                     )
+                    }
                 }
         }
-    }
+
 }

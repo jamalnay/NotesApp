@@ -7,19 +7,17 @@ import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.lamda.projectnotes.ui.AppDestinations
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateUpdateScreen(
     navController: NavController,
@@ -27,12 +25,15 @@ fun CreateUpdateScreen(
 ) {
     var isCategoriesMenuExpanded by rememberSaveable { mutableStateOf(false) }
     val options = viewModel.categoriesState.value.listOfCategories
-    var selectedOption by rememberSaveable { mutableStateOf("") }
-    var title by rememberSaveable { mutableStateOf("") }
-    var content by rememberSaveable { mutableStateOf("") }
     var isPinned by rememberSaveable { mutableStateOf(false) }
-    var categoryName by rememberSaveable { mutableStateOf("") }
-    var categoryId by rememberSaveable { mutableStateOf(-1) }
+
+    val title = viewModel.noteTitle.value
+    val content = viewModel.noteContent.value
+    val category = viewModel.selectedCategoryState.value.category
+
+    val currentNoteId = viewModel.currentNoteId
+
+
 
 
 
@@ -69,17 +70,19 @@ fun CreateUpdateScreen(
                         }
                     }
                     IconButton(onClick = {
-                        if (categoryName != "" && title != "" && content != "") {
+                        if (title.text.isNotEmpty() && content.text.isNotEmpty()) {
                             viewModel.onEvent(
                                 CreateUpdateEvents.SaveNote(
                                     isPinned,
-                                    title,
-                                    content,
-                                    categoryId,
-                                    categoryName
+                                    title.text,
+                                    content.text,
+                                    category.catId!!,
+                                    category.catName
                                 )
                             )
-                            navController.navigateUp()
+                            if (currentNoteId == 0) navController.navigateUp()
+                            else navController.navigate(AppDestinations.ManageNote.route + "?noteId=${viewModel.currentNoteId}")
+
                         }
                     }
                     )
@@ -112,12 +115,11 @@ fun CreateUpdateScreen(
                 )
                 {
                     OutlinedTextField(
-                        // The `menuAnchor` modifier must be passed to the text field for correctness.
                         modifier = Modifier
                             .menuAnchor()
                             .wrapContentWidth(),
                         readOnly = true,
-                        value = selectedOption,
+                        value = category.catName,
                         onValueChange = {},
                         label = { Text("Category") },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isCategoriesMenuExpanded) },
@@ -135,9 +137,7 @@ fun CreateUpdateScreen(
                                     modifier = Modifier.fillMaxWidth(),
                                     text = { Text(selectionOption.catName) },
                                     onClick = {
-                                        selectedOption = selectionOption.catName
-                                        categoryName = selectionOption.catName
-                                        categoryId = selectionOption.catId!!
+                                        viewModel.onEvent(CreateUpdateEvents.SelectCategory(selectionOption))
                                         isCategoriesMenuExpanded = false
                                     },
                                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
@@ -149,28 +149,42 @@ fun CreateUpdateScreen(
                 }
             }
 
-            OutlinedTextField(
+            TextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp),
+                    .padding(top = 16.dp)
+                ,
                 readOnly = false,
-                value = title,
-                onValueChange = { title = it },
-                label = { Text("Title") },
+                value = title.text,
+                onValueChange = {
+                    viewModel.onEvent(CreateUpdateEvents.EnteredTitle(it))
+                                },
                 singleLine = true,
-                textStyle = MaterialTheme.typography.titleMedium
+                textStyle = MaterialTheme.typography.titleMedium,
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
+                placeholder = { Text(text = "Title..") }
             )
 
-            OutlinedTextField(
+            TextField(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(top = 16.dp, bottom = 64.dp),
                 readOnly = false,
-                value = content,
-                onValueChange = { content = it },
-                label = { Text("Content") },
-                maxLines = 20,
-                textStyle = MaterialTheme.typography.bodyLarge
+                value = content.text,
+                onValueChange = {
+                    viewModel.onEvent(CreateUpdateEvents.EnteredContent(it))
+                },
+                textStyle = MaterialTheme.typography.bodyLarge,
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
+                placeholder = { Text(text = "Content..") },
             )
 
         }

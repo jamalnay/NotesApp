@@ -14,11 +14,22 @@ interface NoteDAO {
             SELECT * FROM note 
             JOIN(SELECT cat_id,cat_name FROM category) category 
             ON note.cat_id = category.cat_id 
-            WHERE is_deleted = FALSE 
+            WHERE is_deleted = FALSE AND is_pinned = FALSE
             ORDER BY NOT is_pinned,creation_time DESC
             """
     ) //TODO() solve the ordering problem
-    fun getAllNotes(): Flow<List<Note>>
+    fun getAllNotes(): Flow<List<Note>> //i excluded th pinned notes
+
+    @Query(
+        """
+            SELECT * FROM note 
+            JOIN(SELECT cat_id,cat_name FROM category) category 
+            ON note.cat_id = category.cat_id 
+            WHERE is_deleted = FALSE AND is_pinned = TRUE
+            ORDER BY creation_time DESC
+            """
+    ) //TODO() solve the ordering problem
+    fun getPinnedNotes(): Flow<List<Note>>
 
     @Query(
             """
@@ -37,7 +48,7 @@ interface NoteDAO {
             SELECT * FROM note
             JOIN(SELECT cat_id,cat_name FROM category) category 
             ON note.cat_id = category.cat_id  
-            WHERE note.cat_id = :cat_id AND is_deleted = FALSE
+            WHERE note.cat_id = :cat_id AND is_deleted = FALSE AND is_pinned = FALSE
             ORDER BY NOT is_pinned,creation_time DESC
             """
     )
@@ -52,6 +63,7 @@ interface NoteDAO {
             """
     )
     suspend fun getNote(noteId: Int): Note
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNote(note: Note)

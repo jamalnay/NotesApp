@@ -16,6 +16,10 @@ class CategoryRepositoryImpl @Inject constructor(private val categoryDao: Catego
         return categoryDao.getCatById(catId)
     }
 
+    override suspend fun getNotesCountForCategory(category: Int): Int {
+        return categoryDao.getNotesCountForCategory(category)
+    }
+
     override suspend fun insertCategory(category: Category) {
         categoryDao.insertCategory(category)
     }

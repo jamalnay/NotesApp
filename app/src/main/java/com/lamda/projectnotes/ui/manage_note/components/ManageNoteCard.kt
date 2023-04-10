@@ -35,7 +35,7 @@ fun ManageNoteCard(
         modifier = modifier
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = Color(note.noteColor)
+            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
         )
     ) {
         Row(
@@ -117,7 +117,7 @@ fun DeletedNoteCard(
         modifier = modifier
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = Color(note.noteColor)
+            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
         )
     ) {
         Row(
@@ -127,7 +127,7 @@ fun DeletedNoteCard(
         {
             Text(
                 modifier = Modifier
-                    .padding(8.dp),
+                    .padding(start = 16.dp,end = 16.dp, bottom = 4.dp, top = 16.dp),
                 text = note.categoryName,
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.primary
@@ -142,26 +142,19 @@ fun DeletedNoteCard(
             }
 
         }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+        Text(
+            modifier = Modifier
+                .padding(start = 16.dp,end = 16.dp, bottom = 8.dp, top = 4.dp)
+                .fillMaxWidth(),
+            text = note.noteTitle,
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.primary,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
-        {
-            Text(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth(),
-                text = note.noteTitle,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-
-        }
 
         Text(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(start = 16.dp,end = 16.dp, bottom = 16.dp, top = 8.dp),
             text = note.noteContent,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.primary,

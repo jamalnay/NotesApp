@@ -21,21 +21,25 @@ class HomeViewModel @Inject constructor(
     private val noteUseCases: NoteUseCases,
     private val categoryUseCases: CategoryUseCases,
 ) : ViewModel() {
-    private val allCategory = Category(-1, "All")
+    private val allCategory = Category(-1, "All",0)
 
     private val _notesState = mutableStateOf(NotesState(emptyList()))
     val notesState: State<NotesState> = _notesState
+
+    private val _pinnedNotesState = mutableStateOf(NotesState(emptyList()))
+    val pinnedNotesState: State<NotesState> = _pinnedNotesState
 
 
 
     private val _categoriesState = mutableStateOf(CategoriesState(emptyList()))
     val categoriesState: State<CategoriesState> = _categoriesState
 
-    private val _selectedCategoryState = mutableStateOf(SelectedCategoryState(Category(-1, "All")))
+    private val _selectedCategoryState = mutableStateOf(SelectedCategoryState(Category(-1, "All",0)))
     val selectedCategoryState: State<SelectedCategoryState> = _selectedCategoryState
 
     private var getNotesJob: Job? = null
     private var getCategoriesJob: Job? = null
+    private var getPinnedNotesJob: Job? = null
 
     init {
         viewModelScope.launch {
@@ -43,6 +47,7 @@ class HomeViewModel @Inject constructor(
                 categoryUseCases.createUpdateCategory(allCategory)
                 getCategoriesList()
                 getNotesList()
+                getPinnedNotesList()
             } catch (_: Exception) {
 
             }
@@ -75,6 +80,7 @@ class HomeViewModel @Inject constructor(
     override fun onCleared() {
         getNotesJob?.cancel()
         getCategoriesJob?.cancel()
+        getPinnedNotesJob?.cancel()
         super.onCleared()
     }
 
@@ -93,6 +99,17 @@ class HomeViewModel @Inject constructor(
                 .collect { notes ->
                     _notesState.value = notesState.value.copy(
                         listOfNotes = notes
+                    )
+                }
+        }
+    }
+    private fun getPinnedNotesList() {
+        getPinnedNotesJob?.cancel()
+        getPinnedNotesJob = viewModelScope.launch {
+            noteUseCases.getPinnedNotes()
+                .collect { pinnedNotes ->
+                    _pinnedNotesState.value = pinnedNotesState.value.copy(
+                        listOfNotes = pinnedNotes
                     )
                 }
         }
@@ -124,7 +141,7 @@ class HomeViewModel @Inject constructor(
 
     private fun selectCategory(category: Category) {
         _selectedCategoryState.value = selectedCategoryState.value.copy(
-            selectedCategory = category
+            category = category
         )
         if (category.catId == -1) {
             getNotesList()

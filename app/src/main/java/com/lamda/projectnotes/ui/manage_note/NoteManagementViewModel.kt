@@ -56,6 +56,7 @@ class NoteManagementViewModel @Inject constructor(
 
     }
 
+
     override fun onCleared() {
         getDeletedNotesJob?.cancel()
         moveToTrashJob?.cancel()

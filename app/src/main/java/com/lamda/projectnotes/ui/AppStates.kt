@@ -32,8 +32,17 @@ class AppStates {
     )
 
     data class SelectedCategoryState(
-        val selectedCategory: Category?,
+        val category: Category = Category(
+            0,"",0
+        )
     )
+
+    data class TextFieldsState(
+        val text:String = "",
+        )
+
+
+
 
 }
 

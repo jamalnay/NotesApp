@@ -21,7 +21,7 @@ import com.lamda.projectnotes.ui.home.HomeViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCategoryChip(
-    viewModel: HomeViewModel,
+    viewModel: ManageCategoriesViewModel,
     modifier: Modifier,
 ) {
     var showNewCategoryDialog by rememberSaveable { mutableStateOf(false) }
@@ -47,7 +47,7 @@ fun NewCategoryChip(
             confirmButton = {
                 TextButton(onClick = {
                     if (text.isNotEmpty())
-                        viewModel.onEvent(HomeEvents.CreateCategory(Category(0, text)))
+                        viewModel.onEvent(CategoryEvents.CreateCategory(text))
                     showNewCategoryDialog = false
                 }) {
                     Text(text = "Confirm")

@@ -8,10 +8,7 @@ import com.lamda.projectnotes.domain.repository.CategoryRepository
 import com.lamda.projectnotes.domain.repository.NoteRepository
 import com.lamda.projectnotes.domain.use_cases.CategoryUseCases
 import com.lamda.projectnotes.domain.use_cases.NoteUseCases
-import com.lamda.projectnotes.domain.use_cases.category_use_cases.CreateUpdateCategory
-import com.lamda.projectnotes.domain.use_cases.category_use_cases.DeleteCategory
-import com.lamda.projectnotes.domain.use_cases.category_use_cases.GetAllCategories
-import com.lamda.projectnotes.domain.use_cases.category_use_cases.GetCatById
+import com.lamda.projectnotes.domain.use_cases.category_use_cases.*
 import com.lamda.projectnotes.domain.use_cases.note_use_cases.*
 import dagger.Module
 import dagger.Provides
@@ -51,6 +48,7 @@ object LocalDatabaseModule {
             createUpdateNote = CreateUpdateNote(repository),
             deleteNote = DeleteNote(repository),
             getAllNotes = GetAllNotes(repository),
+            getPinnedNotes = GetPinnedNotes(repository),
             getDeletedNotes = GetDeletedNotes(repository),
             getNotesForCategory = GetNotesForCategory(repository),
             getNote = GetNote(repository)
@@ -64,7 +62,8 @@ object LocalDatabaseModule {
             createUpdateCategory = CreateUpdateCategory(repository),
             deleteCategory = DeleteCategory(repository),
             getAllCategories = GetAllCategories(repository),
-            getCatById = GetCatById(repository)
+            getCatById = GetCatById(repository),
+            getNotesCountForCategory = GetNotesCountForCategory(repository)
         )
     }
 

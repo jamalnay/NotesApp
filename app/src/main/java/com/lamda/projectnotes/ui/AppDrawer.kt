@@ -17,9 +17,6 @@ import com.lamda.projectnotes.R
 fun AppDrawer(
     navController: NavController,
     closeDrawer: () -> Unit,
-    isSyncActivated: Boolean,
-    onSyncChecked: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     ModalDrawerSheet(
         drawerContainerColor = MaterialTheme.colorScheme.surface
@@ -33,7 +30,11 @@ fun AppDrawer(
             icon = { Icon(Icons.Filled.Home, "Home Screen") },
             selected = true /* currentRoute == NavDestinations.HOME_ROUTE*/,
             onClick = { navController.navigate(AppDestinations.Home.route); closeDrawer() },
-            modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+            modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+            colors = NavigationDrawerItemDefaults.colors(
+                selectedIconColor = MaterialTheme.colorScheme.background,
+                selectedTextColor = MaterialTheme.colorScheme.background
+            )
         )
 
         NavigationDrawerItem(
@@ -42,14 +43,6 @@ fun AppDrawer(
             selected = false /* currentRoute == NavDestinations.HOME_ROUTE*/,
             onClick = { navController.navigate(AppDestinations.ManageCategories.route); closeDrawer() },
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-        )
-        NavigationDrawerItem(
-            label = { Text("Synchronise notes") },
-            icon = { Icon(Icons.Filled.Sync, "Synchronise notes") },
-            selected = false /* currentRoute == NavDestinations.HOME_ROUTE*/,
-            onClick = { },
-            modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
-            badge = { SyncSwitch(isSyncActive = isSyncActivated, onCheckedChange = onSyncChecked) }
         )
         NavigationDrawerItem(
             label = { Text("Trash") },
@@ -83,14 +76,6 @@ private fun ProjectNotesLogo(modifier: Modifier = Modifier) {
     }
 }
 
-@Composable
-fun SyncSwitch(
-    isSyncActive: Boolean,
-    onCheckedChange: () -> Unit,
-) {
-    var checked by remember { mutableStateOf(isSyncActive) }
-    Switch(checked = checked, onCheckedChange = { checked = it; onCheckedChange() })
-}
 
 //@Preview
 //@Composable

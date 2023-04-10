@@ -1,5 +1,7 @@
 package com.lamda.projectnotes.ui.home.components
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,20 +9,26 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CreateNewFolder
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.lamda.projectnotes.data.data_source.local.model.Category
+import com.lamda.projectnotes.ui.AppDestinations
 import com.lamda.projectnotes.ui.home.HomeEvents
 import com.lamda.projectnotes.ui.home.HomeViewModel
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryChipGroup(
     viewModel: HomeViewModel,
     modifier: Modifier,
+    navController: NavController
 ) {
     Row {
         LazyRow(
@@ -32,8 +40,24 @@ fun CategoryChipGroup(
                     category = category,
                     viewModel = viewModel,
                     modifier = modifier,
-                    selected = category == viewModel.selectedCategoryState.value.selectedCategory
+                    selected = category == viewModel.selectedCategoryState.value.category
                 )
+                if (category == viewModel.categoriesState.value.listOfCategories.last()){
+                    FilterChip(
+                        modifier = modifier.padding(4.dp),
+                        selected = false,
+                        onClick = { navController.navigate(AppDestinations.ManageCategories.route) },
+                        label = { Text(text = "",modifier = Modifier.padding(
+                            start = 0.dp,end = 0.dp , top = 12.dp, bottom = 12.dp)) },
+                        trailingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.CreateNewFolder,
+                                contentDescription = "Create New Category"
+                            )
+                        },
+                        shape = RoundedCornerShape(15.dp)
+                    )
+                }
             }
         }
 
@@ -48,16 +72,24 @@ fun CategoryChip(
     modifier: Modifier,
     selected: Boolean,
 ) {
-    FilterChip(
-        modifier = modifier.padding(4.dp),
-        label = { Text(text = category.catName,
-            modifier = Modifier.padding(
-                start = 0.dp,end = 0.dp , top = 12.dp, bottom = 12.dp)) },
-        onClick = { viewModel.onEvent(HomeEvents.SelectCategory(category)) },
-        selected = selected,
-        shape = RoundedCornerShape(15.dp)
-    )
+
+        FilterChip(
+            modifier = modifier.padding(4.dp),
+            label = { Text(text = category.catName,
+                modifier = Modifier.padding(
+                    start = 0.dp,end = 0.dp , top = 12.dp, bottom = 12.dp)) },
+            onClick = { viewModel.onEvent(HomeEvents.SelectCategory(category)) },
+            selected = selected,
+            shape = RoundedCornerShape(15.dp),
+            colors = FilterChipDefaults.filterChipColors(
+                selectedLabelColor = MaterialTheme.colorScheme.background
+            )
+        )
+
+
 }
+
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)

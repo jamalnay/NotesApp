@@ -9,6 +9,8 @@ interface NoteRepository {
 
     fun getAllNotes(): Flow<List<Note>>
 
+    fun getPinnedNotes(): Flow<List<Note>>
+
     fun getDeletedNotes(): Flow<List<Note>>
 
     fun getNotesForCategory(catId: Int): Flow<List<Note>>

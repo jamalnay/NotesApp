@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.lamda.projectnotes.data.data_source.local.model.Note
+import com.lamda.projectnotes.ui.AppDestinations
 import com.lamda.projectnotes.ui.manage_note.components.ManageNoteCard
 import kotlinx.coroutines.launch
 
@@ -55,7 +56,7 @@ fun ManageNoteScreen(
                 title = { Text(text = "New Note") },
                 navigationIcon = {
                     IconButton(
-                        onClick = { navController.navigateUp() }
+                        onClick = { navController.navigate(AppDestinations.Home.route) }
                     ) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
@@ -75,25 +76,13 @@ fun ManageNoteScreen(
                         DropdownMenuItem(
                             text = { Text("Edit note") },
                             onClick = {
-                                      /*navController.navigate(AppDestinations.CreateUpdateNote.route + "?noteId=${note.noteId}")*/
+                                      navController.navigate(AppDestinations.CreateUpdateNote.route + "?noteId=${note.noteId}")
                                         isActionsMenuExpanded = false
                                       },
                             leadingIcon = {
                                 Icon(
                                     Icons.Outlined.Create,
                                     contentDescription = "edit note"
-                                )
-                            })
-                        DropdownMenuItem(
-                            text = { Text("Obscure note") },
-                            onClick = {
-                                      /* Handle edit! */
-                                        isActionsMenuExpanded = false
-                                      },
-                            leadingIcon = {
-                                Icon(
-                                    Icons.Outlined.VisibilityOff,
-                                    contentDescription = "obscure note"
                                 )
                             })
                         DropdownMenuItem(
