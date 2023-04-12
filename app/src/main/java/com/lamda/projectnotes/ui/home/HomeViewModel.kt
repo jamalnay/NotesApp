@@ -2,6 +2,7 @@ package com.lamda.projectnotes.ui.home
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lamda.projectnotes.data.data_source.local.model.Category
@@ -20,8 +21,9 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val noteUseCases: NoteUseCases,
     private val categoryUseCases: CategoryUseCases,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val allCategory = Category(-1, "All",0)
+    val allCategory = Category(-1, "All",0)
 
     private val _notesState = mutableStateOf(NotesState(emptyList()))
     val notesState: State<NotesState> = _notesState
@@ -34,8 +36,9 @@ class HomeViewModel @Inject constructor(
     private val _categoriesState = mutableStateOf(CategoriesState(emptyList()))
     val categoriesState: State<CategoriesState> = _categoriesState
 
-    private val _selectedCategoryState = mutableStateOf(SelectedCategoryState(Category(-1, "All",0)))
-    val selectedCategoryState: State<SelectedCategoryState> = _selectedCategoryState
+
+    private val _notesForCategoryState = mutableStateOf(NotesState(emptyList()))
+    val notesForCategoryState: State<NotesState> = _notesForCategoryState
 
     private var getNotesJob: Job? = null
     private var getCategoriesJob: Job? = null
@@ -52,29 +55,6 @@ class HomeViewModel @Inject constructor(
 
             }
         }
-//  prepopulate some data
-//        viewModelScope.launch {
-//            categoryUseCases.createUpdateCategory.invoke(Category(catName = "Work Out"))
-//            categoryUseCases.createUpdateCategory.invoke(Category(catName = "Life"))
-//            categoryUseCases.createUpdateCategory.invoke(Category(catName = "Family"))
-//            categoryUseCases.createUpdateCategory.invoke(Category(catName = "Work"))
-//            noteUseCases.createUpdateNote.invoke(Note( noteTitle = "What lorem ipsum text is?", noteContent = "Hello everyone this is " +
-//                    "my first note, happy to meet you all, Thank you. In publishing and graphic design, Lorem ipsum is " +
-//                    "a placeholder text commonly used to demonstr " +
-//                    "ate the visual form of a document or a typeface", creationTime = 1677658911, noteColor = Note.noteColors.random().toArgb(),
-//                isPinned = true, noteCategory = 1, noteCategoryName = "Workout"))
-//            noteUseCases.createUpdateNote.invoke(Note( noteTitle = "Some comment from Facebook", noteContent = "Last year, I got 5 internship interviews in 1 week through Linkedin. Of course. it is quite an unintuitive website, and it can take years to get better at it, but at least in Denmark it is very useful. It might be different in other job markets though.",
-//                creationTime = 1677658911, noteColor = Note.noteColors.random().toArgb(),
-//                isPinned = true, noteCategory = 1, noteCategoryName = "Workout"))
-//            noteUseCases.createUpdateNote.invoke(Note( noteTitle = "Referencing complex data using Room", noteContent = "Room provides functionality for converting between primitive and boxed types but doesn't allow for object references between entities. This document explains how to use type converters and why Room doesn't support object references.",
-//                creationTime = 1677658911, noteColor = Note.noteColors.random().toArgb(),
-//                isPinned = true, noteCategory = 2, noteCategoryName = "Life"))
-//            noteUseCases.createUpdateNote.invoke(Note( noteTitle = "App install location", noteContent = "Beginning with API Level 8, you can allow your application to be installed on the external storage (for example, the device's SD card). This is an optional feature you can declare for your application with the android:installLocation manifest attribute. If you do not declare this attribute, your application will be installed on the internal storage only and it cannot be moved to the external storage.",
-//                creationTime = 1677658911, noteColor = Note.noteColors.random().toArgb(),
-//                isPinned = true, noteCategory = 4, noteCategoryName = "Work"))
-//
-//        }
-
     }
 
     override fun onCleared() {
@@ -127,28 +107,18 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getNotesForCategory(catId: Int) {
+    private fun selectCategory(category: Category) {
         getNotesJob?.cancel()
         getNotesJob = viewModelScope.launch {
-            noteUseCases.getNotesForCategory(catId = catId)
+            noteUseCases.getNotesForCategory(catId = category.catId!!)
                 .collect { notes ->
-                    _notesState.value = notesState.value.copy(
+                    _notesForCategoryState.value = notesForCategoryState.value.copy(
                         listOfNotes = notes
                     )
                 }
         }
     }
 
-    private fun selectCategory(category: Category) {
-        _selectedCategoryState.value = selectedCategoryState.value.copy(
-            category = category
-        )
-        if (category.catId == -1) {
-            getNotesList()
-        } else {
-            getNotesForCategory(category.catId!!)
-        }
-    }
 
     private fun createCategory(category: Category) {
         viewModelScope.launch { categoryUseCases.createUpdateCategory(category) }

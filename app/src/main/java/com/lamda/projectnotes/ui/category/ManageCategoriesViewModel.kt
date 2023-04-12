@@ -25,9 +25,6 @@ class ManageCategoriesViewModel @Inject constructor(
     private val _categoriesState = mutableStateOf(CategoriesState(emptyList()))
     val categoriesState: State<CategoriesState> = _categoriesState
 
-    lateinit var listOfCats: Flow<List<Category>>
-
-
     private var getCategoriesJob: Job? = null
 
 
