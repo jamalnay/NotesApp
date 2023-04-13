@@ -179,13 +179,15 @@ fun HomeContent(
                         }
                     }
                 }
-
-                item {
-                    Row(
-                        modifier = Modifier.padding(start = 16.dp, top = 24.dp)
-                    ) {
-                        Icon(imageVector = Icons.Default.History, contentDescription = "")
-                        Text(text = "Recent notes", Modifier.padding(8.dp, end = 16.dp))
+                if (notes.isNotEmpty())
+                {
+                    item {
+                        Row(
+                            modifier = Modifier.padding(start = 16.dp, top = 24.dp)
+                        ) {
+                            Icon(imageVector = Icons.Default.History, contentDescription = "")
+                            Text(text = "Recent notes", Modifier.padding(8.dp, end = 16.dp))
+                        }
                     }
                 }
                 items(notes) { note ->

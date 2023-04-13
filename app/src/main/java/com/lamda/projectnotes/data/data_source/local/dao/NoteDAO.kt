@@ -18,7 +18,7 @@ interface NoteDAO {
             ORDER BY NOT is_pinned,creation_time DESC
             """
     ) //TODO() solve the ordering problem
-    fun getAllNotes(): Flow<List<Note>> //i excluded th pinned notes
+    fun getAllNotes(): Flow<List<Note>>
 
     @Query(
         """

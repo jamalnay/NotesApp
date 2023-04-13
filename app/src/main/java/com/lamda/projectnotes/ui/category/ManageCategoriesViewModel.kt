@@ -25,6 +25,8 @@ class ManageCategoriesViewModel @Inject constructor(
     private val _categoriesState = mutableStateOf(CategoriesState(emptyList()))
     val categoriesState: State<CategoriesState> = _categoriesState
 
+
+
     private var getCategoriesJob: Job? = null
 
 
@@ -37,6 +39,7 @@ class ManageCategoriesViewModel @Inject constructor(
             } catch (_: Exception) {
             }
         }
+
     }
 
     override fun onCleared() {
@@ -51,6 +54,8 @@ class ManageCategoriesViewModel @Inject constructor(
             is CategoryEvents.RenameCategory -> renameCategory(categoryEvents.category)
         }
     }
+
+
 
     private fun createCategory(catName:String){
         viewModelScope.launch {

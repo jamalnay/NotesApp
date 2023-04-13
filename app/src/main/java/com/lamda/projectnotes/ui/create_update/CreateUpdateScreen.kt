@@ -171,7 +171,7 @@ fun CreateUpdateScreen(
 
             TextField(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .wrapContentSize()
                     .padding(top = 16.dp, bottom = 64.dp),
                 readOnly = false,
                 value = content.text,

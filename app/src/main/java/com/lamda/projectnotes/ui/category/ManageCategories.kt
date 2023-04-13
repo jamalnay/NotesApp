@@ -161,7 +161,7 @@ fun ManageCategories(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CategoryNoteCard(
     category:Category,

@@ -15,6 +15,6 @@ data class Category(
     val catName: String,
 
     @ColumnInfo(name = "notes_count")
-    val notesCount:Int = 0
+    var notesCount:Int = 0
 
     )
