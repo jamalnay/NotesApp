@@ -1,7 +1,7 @@
 package com.lamda.projectnotes.ui.home
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,7 +25,7 @@ import com.lamda.projectnotes.ui.home.components.PinnedNoteCard
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navController: NavController,
@@ -37,7 +37,7 @@ fun HomeScreen(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
     val categoriesList = viewModel.categoriesState.value.listOfCategories.toList()
-    var currentCategory by remember { mutableStateOf(Category(-1, "All",0)) }
+    var currentCategory by remember { mutableStateOf(Category(-1, "All", 0)) }
 
 
     ModalNavigationDrawer(
@@ -99,9 +99,14 @@ fun HomeScreen(
                 modifier = Modifier.padding(top = PaddingValues.calculateTopPadding())
             ) {
                 LazyRow(
-                    modifier = Modifier.padding(top = 16.dp,start = 16.dp, end = 16.dp, bottom = 0.dp),
-                ){
-                    items(categoriesList){category ->
+                    modifier = Modifier.padding(
+                        top = 16.dp,
+                        start = 16.dp,
+                        end = 16.dp,
+                        bottom = 0.dp
+                    ),
+                ) {
+                    items(categoriesList) { category ->
                         FilterChip(
                             modifier = Modifier.padding(4.dp),
                             selected = category == currentCategory,
@@ -109,14 +114,19 @@ fun HomeScreen(
                                 viewModel.onEvent(HomeEvents.SelectCategory(category))
                                 currentCategory = category
                             },
-                            label = { Text(text = category.catName,
-                                modifier = Modifier.padding(
-                                    start = 0.dp,end = 0.dp , top = 12.dp, bottom = 12.dp)) },
+                            label = {
+                                Text(
+                                    text = category.catName,
+                                    modifier = Modifier.padding(
+                                        start = 0.dp, end = 0.dp, top = 12.dp, bottom = 12.dp
+                                    )
+                                )
+                            },
                             shape = RoundedCornerShape(15.dp),
                         )
                     }
                 }
-                HomeContent(viewModel,currentCategory,navController)
+                HomeContent(viewModel, currentCategory, navController)
             }
         }
     }
@@ -126,32 +136,39 @@ fun HomeScreen(
 fun HomeContent(
     viewModel: HomeViewModel,
     category: Category,
-    navController: NavController
-){
-    val pinnedNotes = viewModel.pinnedNotesState.value.listOfNotes.toList()
-    val allNotes = viewModel.notesState.value.listOfNotes.toList()
+    navController: NavController,
+) {
+    val notesState = viewModel.notesState.value.listOfNotes.toList()
+    var pinnedExist by remember {mutableStateOf(false)}
 
-        if (category.catId == -1){
+
+    Crossfade(targetState = notesState, animationSpec = tween(300)) { notes ->
+        //check for pinned notes
+        notes.forEach {
+            if (it.isPinned) {
+                pinnedExist = true
+                return@forEach
+            }
+        }
+        if (category.catId == -1) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(top = 16.dp)
             ) {
-                item() {
-                    Row(
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        Icon(imageVector = Icons.Default.PushPin, contentDescription = "")
-                        Text(text = "Pinned notes",Modifier.padding(8.dp,end = 16.dp))
-                        Icon(imageVector = Icons.Default.East, contentDescription = "")
+                item {
+                    if (pinnedExist) {
+                        Row(
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            Icon(imageVector = Icons.Default.PushPin, contentDescription = "")
+                            Text(text = "Pinned notes", Modifier.padding(8.dp, end = 16.dp))
+                            Icon(imageVector = Icons.Default.East, contentDescription = "")
+                        }
                     }
-                    LazyRow(
-                        Modifier
-                            .padding()
-                            .wrapContentSize()
-                    ){
-                        items(pinnedNotes){note ->
-                            Row(modifier = Modifier) {
+                    LazyRow(modifier = Modifier) {
+                        items(notes) { note ->
+                            if (note.isPinned) {
                                 PinnedNoteCard(
                                     note = note,
                                     modifier = Modifier.clickable {
@@ -162,34 +179,35 @@ fun HomeContent(
                         }
                     }
                 }
-                item(){
+
+                item {
                     Row(
                         modifier = Modifier.padding(start = 16.dp, top = 24.dp)
                     ) {
                         Icon(imageVector = Icons.Default.History, contentDescription = "")
-                        Text(text = "Recent notes",Modifier.padding(8.dp,end = 16.dp))
+                        Text(text = "Recent notes", Modifier.padding(8.dp, end = 16.dp))
                     }
                 }
-                items(allNotes) { note ->
-                    NoteCard(
-                        note = note,
-                        modifier = Modifier.clickable {
-                            navController.navigate(AppDestinations.ManageNote.route + "?noteId=${note.noteId}")
-                        }
-                    )
+                items(notes) { note ->
+                    if (!note.isPinned) {
+                        NoteCard(
+                            note = note,
+                            modifier = Modifier.clickable {
+                                navController.navigate(AppDestinations.ManageNote.route + "?noteId=${note.noteId}")
+                            }
+                        )
+                    }
                 }
             }
-        }
-        else{
-            viewModel.onEvent(HomeEvents.SelectCategory(category))
-            val notesForCategory = viewModel.notesForCategoryState.value.listOfNotes.toList()
 
+        } else {
+            viewModel.onEvent(HomeEvents.SelectCategory(category))
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(top = 16.dp)
             ) {
-                items(notesForCategory) { note ->
+                items(notes) { note ->
                     NoteCard(
                         note = note,
                         modifier = Modifier.clickable {
@@ -199,8 +217,8 @@ fun HomeContent(
                 }
             }
         }
+    }
 }
-
 
 
 

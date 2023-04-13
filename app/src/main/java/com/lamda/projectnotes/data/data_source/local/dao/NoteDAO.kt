@@ -14,7 +14,7 @@ interface NoteDAO {
             SELECT * FROM note 
             JOIN(SELECT cat_id,cat_name FROM category) category 
             ON note.cat_id = category.cat_id 
-            WHERE is_deleted = FALSE AND is_pinned = FALSE
+            WHERE is_deleted = FALSE
             ORDER BY NOT is_pinned,creation_time DESC
             """
     ) //TODO() solve the ordering problem

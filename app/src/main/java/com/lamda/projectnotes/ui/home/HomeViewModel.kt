@@ -20,25 +20,16 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val noteUseCases: NoteUseCases,
-    private val categoryUseCases: CategoryUseCases,
-    savedStateHandle: SavedStateHandle
+    private val categoryUseCases: CategoryUseCases
 ) : ViewModel() {
     val allCategory = Category(-1, "All",0)
-
-    private val _notesState = mutableStateOf(NotesState(emptyList()))
-    val notesState: State<NotesState> = _notesState
-
-    private val _pinnedNotesState = mutableStateOf(NotesState(emptyList()))
-    val pinnedNotesState: State<NotesState> = _pinnedNotesState
-
-
 
     private val _categoriesState = mutableStateOf(CategoriesState(emptyList()))
     val categoriesState: State<CategoriesState> = _categoriesState
 
 
-    private val _notesForCategoryState = mutableStateOf(NotesState(emptyList()))
-    val notesForCategoryState: State<NotesState> = _notesForCategoryState
+    private val _notesState = mutableStateOf(NotesState(emptyList()))
+    val notesState: State<NotesState> = _notesState
 
     private var getNotesJob: Job? = null
     private var getCategoriesJob: Job? = null
@@ -49,8 +40,7 @@ class HomeViewModel @Inject constructor(
             try {
                 categoryUseCases.createUpdateCategory(allCategory)
                 getCategoriesList()
-                getNotesList()
-                getPinnedNotesList()
+                selectCategory(allCategory)
             } catch (_: Exception) {
 
             }
@@ -72,28 +62,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getNotesList() {
-        getNotesJob?.cancel()
-        getNotesJob = viewModelScope.launch {
-            noteUseCases.getAllNotes()
-                .collect { notes ->
-                    _notesState.value = notesState.value.copy(
-                        listOfNotes = notes
-                    )
-                }
-        }
-    }
-    private fun getPinnedNotesList() {
-        getPinnedNotesJob?.cancel()
-        getPinnedNotesJob = viewModelScope.launch {
-            noteUseCases.getPinnedNotes()
-                .collect { pinnedNotes ->
-                    _pinnedNotesState.value = pinnedNotesState.value.copy(
-                        listOfNotes = pinnedNotes
-                    )
-                }
-        }
-    }
 
     private fun getCategoriesList() {
         getCategoriesJob?.cancel()
@@ -109,13 +77,24 @@ class HomeViewModel @Inject constructor(
 
     private fun selectCategory(category: Category) {
         getNotesJob?.cancel()
-        getNotesJob = viewModelScope.launch {
-            noteUseCases.getNotesForCategory(catId = category.catId!!)
-                .collect { notes ->
-                    _notesForCategoryState.value = notesForCategoryState.value.copy(
-                        listOfNotes = notes
-                    )
-                }
+        if (category.catId==-1) {
+            getNotesJob = viewModelScope.launch {
+                noteUseCases.getAllNotes()
+                    .collect { notes ->
+                        _notesState.value = notesState.value.copy(
+                            listOfNotes = notes
+                        )
+                    }
+            }
+        } else {
+            getNotesJob = viewModelScope.launch {
+                noteUseCases.getNotesForCategory(catId = category.catId!!)
+                    .collect { notes ->
+                        _notesState.value = notesState.value.copy(
+                            listOfNotes = notes
+                        )
+                    }
+            }
         }
     }
 
@@ -131,25 +110,3 @@ class HomeViewModel @Inject constructor(
 }
 
 
-//  prepopulate some data
-//        viewModelScope.launch {
-//            categoryUseCases.createUpdateCategory.invoke(Category(catName = "Work Out"))
-//            categoryUseCases.createUpdateCategory.invoke(Category(catName = "Life"))
-//            categoryUseCases.createUpdateCategory.invoke(Category(catName = "Family"))
-//            categoryUseCases.createUpdateCategory.invoke(Category(catName = "Work"))
-//            noteUseCases.createUpdateNote.invoke(Note( noteTitle = "What lorem ipsum text is?", noteContent = "Hello everyone this is " +
-//                    "my first note, happy to meet you all, Thank you. In publishing and graphic design, Lorem ipsum is " +
-//                    "a placeholder text commonly used to demonstr " +
-//                    "ate the visual form of a document or a typeface", creationTime = 1677658911, noteColor = Note.noteColors.random().toArgb(),
-//                isPinned = true, noteCategory = 1, noteCategoryName = "Workout"))
-//            noteUseCases.createUpdateNote.invoke(Note( noteTitle = "Some comment from Facebook", noteContent = "Last year, I got 5 internship interviews in 1 week through Linkedin. Of course. it is quite an unintuitive website, and it can take years to get better at it, but at least in Denmark it is very useful. It might be different in other job markets though.",
-//                creationTime = 1677658911, noteColor = Note.noteColors.random().toArgb(),
-//                isPinned = true, noteCategory = 1, noteCategoryName = "Workout"))
-//            noteUseCases.createUpdateNote.invoke(Note( noteTitle = "Referencing complex data using Room", noteContent = "Room provides functionality for converting between primitive and boxed types but doesn't allow for object references between entities. This document explains how to use type converters and why Room doesn't support object references.",
-//                creationTime = 1677658911, noteColor = Note.noteColors.random().toArgb(),
-//                isPinned = true, noteCategory = 2, noteCategoryName = "Life"))
-//            noteUseCases.createUpdateNote.invoke(Note( noteTitle = "App install location", noteContent = "Beginning with API Level 8, you can allow your application to be installed on the external storage (for example, the device's SD card). This is an optional feature you can declare for your application with the android:installLocation manifest attribute. If you do not declare this attribute, your application will be installed on the internal storage only and it cannot be moved to the external storage.",
-//                creationTime = 1677658911, noteColor = Note.noteColors.random().toArgb(),
-//                isPinned = true, noteCategory = 4, noteCategoryName = "Work"))
-//
-//        }
