@@ -4,11 +4,8 @@ import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -18,11 +15,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -31,15 +26,15 @@ import com.lamda.projectnotes.ui.AppDestinations
 import com.lamda.projectnotes.ui.AppDrawer
 import com.lamda.projectnotes.ui.home.components.NoteCard
 import com.lamda.projectnotes.ui.home.components.PinnedNoteCard
-import com.lamda.projectnotes.ui.home.components.SearchTextField
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
+fun HomeScreen (
     navController: NavController,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -51,9 +46,6 @@ fun HomeScreen(
 
     val categoriesList = viewModel.categoriesState.value.listOfCategories.toList()
     var currentCategory by remember { mutableStateOf(allCategory) }
-    var text by rememberSaveable { mutableStateOf("") }
-
-
 
 
     ModalNavigationDrawer(
@@ -226,7 +218,6 @@ fun HomeContent(
                         ) {
                             Icon(imageVector = Icons.Default.PushPin, contentDescription = "")
                             Text(text = "Pinned notes", Modifier.padding(8.dp, end = 16.dp))
-                            Icon(imageVector = Icons.Default.East, contentDescription = "")
                         }
                     }
                     LazyRow(modifier = Modifier) {

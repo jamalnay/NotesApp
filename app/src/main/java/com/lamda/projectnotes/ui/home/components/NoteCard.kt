@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.substring
 import androidx.compose.ui.unit.dp
 import com.lamda.projectnotes.data.data_source.local.model.Note
 import com.lamda.projectnotes.ui.utils.dateConverter
@@ -47,12 +46,6 @@ fun NoteCard(
             thickness = 1.dp,
             modifier = Modifier.padding(start = 16.dp,end = 24.dp, bottom = 12.dp, top = 12.dp)
         )
-
-//            PinNoteButton(
-//                isPinned = note.isPinned,
-//                onClick = { onPinToggled(note) },
-//                modifier = Modifier.padding(top = 0.dp)
-//            )
 
         Text(
             modifier = Modifier.padding(start = 16.dp,end = 16.dp, bottom = 12.dp, top = 2.dp),

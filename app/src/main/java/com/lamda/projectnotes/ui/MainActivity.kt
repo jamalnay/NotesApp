@@ -11,9 +11,9 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity () {
     @OptIn(ExperimentalAnimationApi::class)
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate (savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
