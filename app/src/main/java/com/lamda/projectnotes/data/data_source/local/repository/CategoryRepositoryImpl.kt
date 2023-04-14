@@ -11,15 +11,9 @@ class CategoryRepositoryImpl @Inject constructor(private val categoryDao: Catego
     override fun getAllCategories(): Flow<List<Category>> {
         return categoryDao.getAllCategories()
     }
-
     override suspend fun getCatById(catId: Int): Category {
         return categoryDao.getCatById(catId)
     }
-
-    override suspend fun getNotesCountForCategory(category: Int): Int {
-        return categoryDao.getNotesCountForCategory(category)
-    }
-
     override suspend fun insertCategory(category: Category) {
         categoryDao.insertCategory(category)
     }

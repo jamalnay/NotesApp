@@ -62,8 +62,7 @@ object LocalDatabaseModule {
             createUpdateCategory = CreateUpdateCategory(repository),
             deleteCategory = DeleteCategory(repository),
             getAllCategories = GetAllCategories(repository),
-            getCatById = GetCatById(repository),
-            getNotesCountForCategory = GetNotesCountForCategory(repository)
+            getCatById = GetCatById(repository)
         )
     }
 

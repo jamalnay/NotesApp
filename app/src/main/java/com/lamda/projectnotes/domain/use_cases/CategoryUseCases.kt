@@ -6,6 +6,5 @@ data class CategoryUseCases(
     val createUpdateCategory: CreateUpdateCategory,
     val deleteCategory: DeleteCategory,
     val getAllCategories: GetAllCategories,
-    val getCatById: GetCatById,
-    val getNotesCountForCategory: GetNotesCountForCategory
+    val getCatById: GetCatById
 )

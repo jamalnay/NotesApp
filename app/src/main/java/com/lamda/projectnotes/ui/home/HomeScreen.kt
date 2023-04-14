@@ -1,8 +1,14 @@
 package com.lamda.projectnotes.ui.home
 
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -12,8 +18,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -22,6 +31,9 @@ import com.lamda.projectnotes.ui.AppDestinations
 import com.lamda.projectnotes.ui.AppDrawer
 import com.lamda.projectnotes.ui.home.components.NoteCard
 import com.lamda.projectnotes.ui.home.components.PinnedNoteCard
+import com.lamda.projectnotes.ui.home.components.SearchTextField
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -32,12 +44,16 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
 
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val allCategory = viewModel.allCategory
 
     val categoriesList = viewModel.categoriesState.value.listOfCategories.toList()
-    var currentCategory by remember { mutableStateOf(Category(-1, "All", 0)) }
+    var currentCategory by remember { mutableStateOf(allCategory) }
+    var text by rememberSaveable { mutableStateOf("") }
+
+
 
 
     ModalNavigationDrawer(
@@ -56,10 +72,8 @@ fun HomeScreen(
                 )
                 {
                     CenterAlignedTopAppBar(
-                        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(0.dp)
-                        ),
-                        title = { Text(text = "My Notes") },
+                        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
+                        title = { Text(text = "My notes")},
                         navigationIcon = {
                             IconButton(
                                 onClick = {
@@ -74,8 +88,37 @@ fun HomeScreen(
                                     contentDescription = "Navigation menu"
                                 )
                             }
-                        }
+                        },
+                        scrollBehavior = scrollBehavior
                     )
+                    LazyRow(
+                        modifier = Modifier.padding(
+                            top = 8.dp,
+                            start = 16.dp,
+                            end = 16.dp,
+                            bottom = 0.dp
+                        ),
+                    ) {
+                        items(categoriesList) { category ->
+                            FilterChip(
+                                modifier = Modifier.padding(4.dp),
+                                selected = category == currentCategory,
+                                onClick = {
+                                    viewModel.onEvent(HomeEvents.SelectCategory(category))
+                                    currentCategory = category
+                                },
+                                label = {
+                                    Text(
+                                        text = category.catName,
+                                        modifier = Modifier.padding(
+                                            start = 0.dp, end = 0.dp, top = 12.dp, bottom = 12.dp
+                                        )
+                                    )
+                                },
+                                shape = RoundedCornerShape(15.dp),
+                            )
+                        }
+                    }
                 }
             },
             floatingActionButton = {
@@ -95,54 +138,74 @@ fun HomeScreen(
 
         { PaddingValues ->
 
-            Column(
-                modifier = Modifier.padding(top = PaddingValues.calculateTopPadding())
-            ) {
-                LazyRow(
-                    modifier = Modifier.padding(
-                        top = 16.dp,
-                        start = 16.dp,
-                        end = 16.dp,
-                        bottom = 0.dp
-                    ),
-                ) {
-                    items(categoriesList) { category ->
-                        FilterChip(
-                            modifier = Modifier.padding(4.dp),
-                            selected = category == currentCategory,
-                            onClick = {
-                                viewModel.onEvent(HomeEvents.SelectCategory(category))
-                                currentCategory = category
-                            },
-                            label = {
-                                Text(
-                                    text = category.catName,
-                                    modifier = Modifier.padding(
-                                        start = 0.dp, end = 0.dp, top = 12.dp, bottom = 12.dp
-                                    )
-                                )
-                            },
-                            shape = RoundedCornerShape(15.dp),
-                        )
-                    }
-                }
-                HomeContent(viewModel, currentCategory, navController)
+            BackHandler(enabled = currentCategory.catId != allCategory.catId) {
+                //goes back to All category
+                currentCategory = allCategory
+                viewModel.onEvent(HomeEvents.SelectCategory(allCategory))
             }
+            HomeContent(
+                viewModel,
+                currentCategory,
+                navController,
+                drawerState,
+                coroutineScope,
+                Modifier.padding(top = PaddingValues.calculateTopPadding())
+            )
+
+
+
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeContent(
     viewModel: HomeViewModel,
     category: Category,
     navController: NavController,
+    drawerState: DrawerState,
+    coroutineScope: CoroutineScope,
+    modifier: Modifier
 ) {
     val notesState = viewModel.notesState.value.listOfNotes.toList()
     var pinnedExist by remember {mutableStateOf(false)}
 
+    var showToast by remember { mutableStateOf(false) }
+    var backPressState by remember { mutableStateOf<BackPress>(BackPress.Idle) }
+    val context = LocalContext.current
 
-    Crossfade(targetState = notesState, animationSpec = tween(300)) { notes ->
+    if(drawerState.isOpen){
+        BackHandler(enabled = true) {
+            coroutineScope.launch { drawerState.close() }
+        }
+    }
+
+    if (category.catId == -1){
+        if(showToast){
+            Toast.makeText(context, "Press again to exit", Toast.LENGTH_SHORT).show()
+            showToast= false
+        }
+
+        LaunchedEffect(key1 = backPressState) {
+            if (backPressState == BackPress.InitialTouch) {
+                delay(2000)
+                backPressState = BackPress.Idle
+            }
+        }
+
+        BackHandler(backPressState == BackPress.Idle) {
+            backPressState = BackPress.InitialTouch
+            showToast = true
+        }
+    }
+
+
+    Crossfade(
+        modifier = modifier,
+        targetState = notesState,
+        animationSpec = tween(durationMillis = 500, delayMillis = 0, easing = LinearOutSlowInEasing)
+    ) { notes ->
         //check for pinned notes
         notes.forEach {
             if (it.isPinned) {
@@ -154,12 +217,12 @@ fun HomeContent(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 16.dp)
+                    .padding(top = 8.dp)
             ) {
                 item {
                     if (pinnedExist) {
                         Row(
-                            modifier = Modifier.padding(16.dp)
+                            modifier = Modifier.padding(16.dp,top = 8.dp)
                         ) {
                             Icon(imageVector = Icons.Default.PushPin, contentDescription = "")
                             Text(text = "Pinned notes", Modifier.padding(8.dp, end = 16.dp))
@@ -204,6 +267,7 @@ fun HomeContent(
 
         } else {
             viewModel.onEvent(HomeEvents.SelectCategory(category))
+
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()

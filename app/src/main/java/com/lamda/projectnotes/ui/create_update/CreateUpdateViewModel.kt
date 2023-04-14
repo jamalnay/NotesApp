@@ -138,7 +138,7 @@ class CreateUpdateViewModel @Inject constructor(
                         noteContent = content,
                         noteCategory = categoryId,
                         isPinned = isPinned,
-                        noteColor = Note.noteColors.random().toArgb(),
+                        noteColor = 1,
                         creationTime = System.currentTimeMillis() / 1000,
                         categoryName = categoryName
                     )
@@ -152,7 +152,7 @@ class CreateUpdateViewModel @Inject constructor(
                         noteContent = content,
                         noteCategory = categoryId,
                         isPinned = isPinned,
-                        noteColor = Note.noteColors.random().toArgb(),
+                        noteColor = 1,
                         creationTime = System.currentTimeMillis() / 1000,
                         categoryName = categoryName
                     )

@@ -35,9 +35,4 @@ data class Note(
 
     @ColumnInfo(name = "cat_name")
     val categoryName: String,
-) {
-    companion object {
-        val noteColors =
-            listOf(White80, Orange80, Aqua80, Turquoise80, Red80, Rose80, Lime80, Grey80)
-    }
-}
+)

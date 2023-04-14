@@ -1,6 +1,5 @@
 package com.lamda.projectnotes.domain.use_cases
 
-import com.lamda.projectnotes.domain.use_cases.category_use_cases.GetNotesCountForCategory
 import com.lamda.projectnotes.domain.use_cases.note_use_cases.*
 
 data class NoteUseCases(

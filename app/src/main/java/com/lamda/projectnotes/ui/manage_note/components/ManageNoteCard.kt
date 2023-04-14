@@ -33,10 +33,7 @@ fun ManageNoteCard(
 ) {
     Card(
         modifier = modifier
-            .fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
-        )
+            .fillMaxWidth()
     ) {
         Row(
             modifier = Modifier
@@ -49,8 +46,7 @@ fun ManageNoteCard(
                     .padding(8.dp, top = 16.dp)
                     .fillMaxWidth(),
                 text = note.categoryName,
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary
+                style = MaterialTheme.typography.labelLarge
             )
         }
         Row(
@@ -63,8 +59,7 @@ fun ManageNoteCard(
                     .padding(8.dp)
                     .fillMaxWidth(),
                 text = note.noteTitle,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary
+                style = MaterialTheme.typography.titleMedium
             )
 
         }
@@ -73,7 +68,6 @@ fun ManageNoteCard(
             modifier = Modifier.padding(8.dp),
             text = note.noteContent,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.primary,
             softWrap = true,
             fontSize = noteFontSize.sp
         )
@@ -89,15 +83,13 @@ fun ManageNoteCard(
                 modifier = Modifier.padding(start = 8.dp, bottom = 16.dp, top = 8.dp, end = 0.dp),
                 text = "Last Modified: ",
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary,
                 fontStyle = FontStyle.Italic,
                 fontWeight = FontWeight.Light
             )
             Text(
                 modifier = Modifier.padding(start = 0.dp, bottom = 16.dp, top = 8.dp, end = 8.dp),
                 text = dateConverter(note.creationTime),
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary
+                style = MaterialTheme.typography.labelLarge
             )
 
 
@@ -115,10 +107,7 @@ fun DeletedNoteCard(
 ) {
     Card(
         modifier = modifier
-            .fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
-        )
+            .fillMaxWidth()
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -129,8 +118,7 @@ fun DeletedNoteCard(
                 modifier = Modifier
                     .padding(start = 16.dp,end = 16.dp, bottom = 4.dp, top = 16.dp),
                 text = note.categoryName,
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary
+                style = MaterialTheme.typography.labelLarge
             )
             Box {
                 DeletedNoteOptions(
@@ -148,7 +136,6 @@ fun DeletedNoteCard(
                 .fillMaxWidth(),
             text = note.noteTitle,
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.primary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
@@ -157,7 +144,6 @@ fun DeletedNoteCard(
             modifier = Modifier.padding(start = 16.dp,end = 16.dp, bottom = 16.dp, top = 8.dp),
             text = note.noteContent,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.primary,
             softWrap = true,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
@@ -179,8 +165,7 @@ fun DeletedNoteOptions(
     ) {
         Icon(
             imageVector = Icons.Outlined.MoreVert,
-            contentDescription = "Note Options",
-            tint = MaterialTheme.colorScheme.primary
+            contentDescription = "Note Options"
         )
     }
 

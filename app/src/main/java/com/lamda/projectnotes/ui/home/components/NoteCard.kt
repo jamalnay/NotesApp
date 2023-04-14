@@ -32,9 +32,6 @@ fun NoteCard(
         modifier = modifier
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp, bottom = 8.dp, top = 16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(0.dp)
-        ),
         shape = RoundedCornerShape(20.dp)
     ) {
 
@@ -44,12 +41,10 @@ fun NoteCard(
             text = note.noteTitle,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.primary
+            style = MaterialTheme.typography.titleMedium
         )
         Divider(
             thickness = 1.dp,
-            color = MaterialTheme.colorScheme.primaryContainer,
             modifier = Modifier.padding(start = 16.dp,end = 24.dp, bottom = 12.dp, top = 12.dp)
         )
 
@@ -65,7 +60,6 @@ fun NoteCard(
             style = MaterialTheme.typography.bodyMedium,
             maxLines = maxLines,
             overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colorScheme.primary
         )
 
         Row(
@@ -79,14 +73,12 @@ fun NoteCard(
                 modifier = Modifier,
                 text = note.categoryName,
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary
             )
 
             Text(
                 modifier = Modifier.weight(2f),
                 text = dateConverter(note.creationTime),
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.End
             )
 
@@ -111,12 +103,10 @@ fun PinnedNoteCard(
                     .padding(start = 16.dp,end = 16.dp, bottom = 2.dp, top = 16.dp),
                 text = note.noteTitle,
                 maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.titleMedium
+                overflow = TextOverflow.Ellipsis
             )
             Divider(
                 thickness = 1.dp,
-                color = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier.padding(start = 16.dp,end = 24.dp, bottom = 8.dp, top = 8.dp)
             )
             Text(

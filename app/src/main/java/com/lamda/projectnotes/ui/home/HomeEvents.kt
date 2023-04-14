@@ -9,3 +9,8 @@ sealed class HomeEvents {
     data class CreateCategory(val category: Category) : HomeEvents()
 }
 
+sealed class BackPress {
+    object Idle : BackPress()
+    object InitialTouch : BackPress()
+}
+

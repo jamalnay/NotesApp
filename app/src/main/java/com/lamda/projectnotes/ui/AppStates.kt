@@ -1,8 +1,8 @@
 package com.lamda.projectnotes.ui
 
+
 import com.lamda.projectnotes.data.data_source.local.model.Category
 import com.lamda.projectnotes.data.data_source.local.model.Note
-import com.lamda.projectnotes.ui.theme.White80
 
 class AppStates {
     data class NoteUiState(
@@ -11,7 +11,7 @@ class AppStates {
             noteTitle = "",
             noteContent = "",
             creationTime = System.currentTimeMillis() / 1000,
-            noteColor = Note.noteColors.indexOf(White80),
+            noteColor = 1,
             isPinned = false,
             isDeleted = false,
             categoryName = "",

@@ -150,9 +150,7 @@ fun ManageCategories(
                     }) {
                         Text(text = "Cancel")
                     }
-                },
-                containerColor = Color.White,
-                tonalElevation = 0.dp
+                }
             )
 
         }
@@ -191,9 +189,6 @@ fun CategoryNoteCard(
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp, bottom = 4.dp, top = 8.dp),
 
-        //color should not be hard coded here
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp))
 
 
     ) {
