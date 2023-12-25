@@ -1,6 +1,8 @@
 # Jetpack Compose Material 3 Notes App
 A Jetpack Compose Material 3 Android notes app that follows the clean MVVM architecture. 
-Libraries used this project: Material 3, Room, Jetpack Compose, Accompanist navigation animation & Hilt for dependency Injection.
+
+# Libraries used in this project:
+Material 3, Room, Jetpack Compose, Accompanist navigation animation & Hilt for dependency Injection.
 
 
 
